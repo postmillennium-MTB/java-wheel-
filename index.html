@@ -1,607 +1,599 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wheel Engineering Analysis</title>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-   <script src="https://unpkg.com/recharts@2.10.0/dist/Recharts.js"></script>
-  <style>
-    * { box-sizing: border-box; }
-    body { 
-      margin: 0; 
-      padding: 0; 
-      background-color: #060d18; 
-      font-family: 'Courier New', monospace;
-    }
-    #root { width: 100%; min-height: 100vh; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MTB Wheel Engineering Calculator</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f9fafb;--card:#fff;--card2:#f3f4f6;--txt:#111827;--txt2:#6b7280;--txt3:#9ca3af;
+  --bdr:rgba(0,0,0,.10);--bdr2:rgba(0,0,0,.18);--info-bg:#eff6ff;--info:#2563eb;
+  --ds:#d97706;--nds:#2563eb;--good:#059669;--warn:#d97706;--bad:#dc2626;
+  --frad:#7c3aed;--flat:#d97706;--klat:#0d9488;--r:8px;--rl:12px
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#0f172a;--card:#1e293b;--card2:#1a2640;--txt:#f1f5f9;--txt2:#94a3b8;--txt3:#64748b;
+  --bdr:rgba(255,255,255,.10);--bdr2:rgba(255,255,255,.18);--info-bg:#1e3a5f;--info:#60a5fa;
+  --ds:#fbbf24;--nds:#60a5fa
+}}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:14px;line-height:1.6;color:var(--txt);background:var(--bg);padding:16px}
+h1{font-size:20px;font-weight:500;color:var(--txt);margin-bottom:2px}
+p.sub{font-size:12px;color:var(--txt2)}
+.card{background:var(--card);border:0.5px solid var(--bdr);border-radius:var(--rl);padding:14px 16px}
+.card2{background:var(--card2);border-radius:var(--r);padding:10px 14px}
+button{cursor:pointer;font-family:inherit;font-size:13px;padding:5px 12px;border:0.5px solid var(--bdr2);border-radius:var(--r);background:var(--card2);color:var(--txt);transition:background .15s}
+button:hover{background:var(--card)}
+button.on{background:var(--info-bg);color:var(--info);border-color:var(--info)}
+.btn-row{display:flex;gap:6px;flex-wrap:wrap}
+label.lbl{font-size:12px;color:var(--txt2);display:block;margin-bottom:5px}
+input[type=range]{width:100%;accent-color:var(--info)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.mcard{background:var(--card2);border-radius:var(--r);padding:10px 12px;text-align:center}
+.mcard .ml{font-size:11px;color:var(--txt2);margin-bottom:3px}
+.mcard .mv{font-size:21px;font-weight:500;line-height:1.1}
+.mcard .ms{font-size:11px;color:var(--txt3);margin-top:3px}
+.tab-nav{display:flex;border-bottom:0.5px solid var(--bdr);margin:14px 0 0;overflow-x:auto}
+.tab-btn{background:none;border:none;border-bottom:2px solid transparent;padding:9px 16px;font-size:13px;color:var(--txt2);cursor:pointer;white-space:nowrap;border-radius:0}
+.tab-btn.on{border-bottom-color:var(--info);color:var(--info);font-weight:500}
+.panel{padding-top:16px}
+.section-lbl{font-size:11px;color:var(--txt3);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px}
+.adj-row{display:flex;align-items:center;gap:6px}
+.adj-btn{width:28px;height:28px;padding:0;display:flex;align-items:center;justify-content:center;font-size:16px;border-radius:var(--r)}
+.adj-val{font-size:15px;font-weight:500;min-width:48px;text-align:center}
+.mini-card{background:var(--card);border:0.5px solid var(--bdr);border-radius:var(--r);padding:8px 10px;cursor:pointer;transition:border-color .15s}
+.mini-card:hover{border-color:var(--bdr2)}
+.mini-card.on{border-color:var(--info);background:var(--info-bg)}
+.mini-name{font-size:11px;color:var(--txt2);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-r0{font-size:13px;font-weight:500}
+.mini-r3{font-size:11px;color:var(--txt2)}
+.note{font-size:12px;color:var(--txt2);line-height:1.7;margin-top:12px}
+.note strong{font-weight:500;color:var(--txt)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;padding:7px 8px;font-weight:500;font-size:11px;color:var(--txt2);border-bottom:1px solid var(--bdr2)}
+td{padding:6px 8px;border-bottom:0.5px solid var(--bdr)}
+tr.hi{background:var(--info-bg)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--txt2);margin-bottom:10px}
+.lg-dot{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle}
+@media(max-width:600px){.grid2{grid-template-columns:1fr}.grid3{grid-template-columns:1fr 1fr}}
+</style>
 </head>
 <body>
-  <div id="root"></div>
 
-  <script type="text/babel">
-    const { useState, useMemo } = React;
+<div style="max-width:1100px;margin:0 auto">
 
-    // ── WHEEL SIZES ───────────────────────────────────────────────────────────────
-    const WHEEL_SIZES = {
-      '29"':   { erd: 600, label: '29"  ISO 622' },
-      '27.5"': { erd: 559, label: '27.5" ISO 584' },
-      '26"':   { erd: 534, label: '26"  ISO 559' },
-    };
+<header style="margin-bottom:14px">
+  <h1>MTB wheel engineering calculator</h1>
+  <p class="sub">Chris King rear hubs · Mode Matrix method (Ford 2018 / bike-wheel-calc) · DT Swiss TK540 rim · PCD 57.4 mm both flanges</p>
+</header>
 
-    // ── PHYSICS ENGINE ────────────────────────────────────────────────────────────
-    function calcWheel({ d_ds, d_nds, pcd_ds, pcd_nds, erd_mm, t_ds, n_spokes }) {
-      const EA   = 210e9 * Math.PI * 1e-6;
-      const Ns   = Math.floor(n_spokes / 2);
-      const R_E  = erd_mm / 2 / 1000;
-      const R    = 0.311;
-      const EIL  = 50, EIR = 150, GJ = 40;
-      const coeff = Math.PI / Math.pow(R, 3);
-      const cos_x = Math.cos(4 * Math.PI * 3 / Ns);
+<!-- CONTROLS -->
+<div class="card" style="margin-bottom:12px">
+  <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end;margin-bottom:12px">
 
-      const T    = t_ds * 9.81;
-      const Rfa  = pcd_ds  / 2 / 1000;
-      const Rfb  = pcd_nds / 2 / 1000;
-      const da   = d_ds  / 1000;
-      const db   = d_nds / 1000;
+    <div>
+      <div class="lbl">Wheel size</div>
+      <div class="btn-row">
+        <button class="on" id="w26" onclick="setWheel(this,534)">26&quot;</button>
+        <button id="w275" onclick="setWheel(this,559)">27.5&quot;</button>
+        <button id="w29" onclick="setWheel(this,600)">29&quot;</button>
+      </div>
+    </div>
 
-      const r2a  = R_E**2 + Rfa**2 - 2*R_E*Rfa*cos_x;
-      const r2b  = R_E**2 + Rfb**2 - 2*R_E*Rfb*cos_x;
-      const La   = Math.sqrt(da**2 + r2a);
-      const Lb   = Math.sqrt(db**2 + r2b);
-      const sa   = da / La,  sb = db / Lb;
+    <div>
+      <div class="lbl">Spokes</div>
+      <div class="btn-row">
+        <button id="s28" onclick="setSpokes(this,28)">28H</button>
+        <button class="on" id="s32" onclick="setSpokes(this,32)">32H</button>
+        <button id="s36" onclick="setSpokes(this,36)">36H</button>
+      </div>
+    </div>
 
-      const ratio = sa / sb;
-      const Tnds  = T * ratio;
+    <div>
+      <div class="lbl">Rim offset</div>
+      <div class="btn-row">
+        <button class="on" id="off0" onclick="setOffset(this,0)">0 mm</button>
+        <button id="off3" onclick="setOffset(this,3)">3 mm DS-offset</button>
+      </div>
+    </div>
 
-      const Ka   = EA / La,  Kb = EA / Lb;
-      const kla  = T    / La + Ka * sa**2;
-      const klb  = Tnds / Lb + Kb * sb**2;
-      const kra  = T    / La + Ka * (r2a / (da**2 + r2a));
-      const krb  = Tnds / Lb + Kb * (r2b / (db**2 + r2b));
+    <div style="flex:1;min-width:180px;max-width:240px">
+      <div style="display:flex;justify-content:space-between">
+        <span class="lbl">DS reference tension</span>
+        <strong id="tv" style="font-size:12px;color:var(--txt)">100 kgf</strong>
+      </div>
+      <input type="range" id="tslider" min="60" max="130" step="1" value="100"
+        oninput="ST.tDS=+this.value;document.getElementById('tv').textContent=this.value+' kgf';refresh()">
+    </div>
 
-      const Ksl  = (Ns / 2) * (kla + klb);
-      const Ksr  = (Ns / 2) * (kra + krb);
-      let   Cl   = 1 / (2 * Ksl),  Cr = 1 / (2 * Ksr);
+  </div>
 
-      for (let m = 1; m <= Ns; m++) {
-        const q = m * m;
-        Cl += 1 / (Ksl + coeff * (EIL * (q-1)**2 + GJ * (q-1)));
-        Cr += 1 / (Ksr + coeff * EIR * (q-1)**2);
-      }
-      const Kl = 1 / Cl / 1000;
-      const Kr = 1 / Cr / 1000;
+  <div class="lbl">Hub preset <span style="font-weight:400;color:var(--txt3)">— click to select</span></div>
+  <div class="btn-row" style="margin-bottom:10px" id="preset-btns">
+    <button data-id="r142" onclick="selHub(this)">ISO 135/142</button>
+    <button class="on" data-id="r148" onclick="selHub(this)">Boost 148×12</button>
+    <button data-id="r157a" onclick="selHub(this)">Superboost 157</button>
+    <button data-id="r157b" onclick="selHub(this)">DH G2 157</button>
+    <button data-id="custom" onclick="selHub(this)">Custom ✎</button>
+  </div>
 
-      const Flat = Tnds * Kl * 1e3 / (EA * sb / Lb);
-      const Frad = Tnds * Kr * 1e3 / (EA / Lb);
+  <!-- Custom controls -->
+  <div id="custom-row" style="display:none;gap:20px;flex-wrap:wrap;padding-top:10px;border-top:0.5px solid var(--bdr)">
+    <div>
+      <div class="lbl">DS center-to-flange (mm)</div>
+      <div class="adj-row">
+        <button class="adj-btn" onclick="adj('dds',-0.5)">−</button>
+        <span class="adj-val" id="dds-v">24.0</span>
+        <button class="adj-btn" onclick="adj('dds',0.5)">+</button>
+      </div>
+    </div>
+    <div>
+      <div class="lbl">NDS center-to-flange (mm)</div>
+      <div class="adj-row">
+        <button class="adj-btn" onclick="adj('dnds',-0.5)">−</button>
+        <span class="adj-val" id="dnds-v">36.3</span>
+        <button class="adj-btn" onclick="adj('dnds',0.5)">+</button>
+      </div>
+    </div>
+    <div>
+      <div class="lbl">DS flange PCD (mm)</div>
+      <div class="adj-row">
+        <button class="adj-btn" onclick="adj('pds',-1)">−</button>
+        <span class="adj-val" id="pds-v">57.4</span>
+        <button class="adj-btn" onclick="adj('pds',1)">+</button>
+      </div>
+    </div>
+    <div>
+      <div class="lbl">NDS flange PCD (mm)</div>
+      <div class="adj-row">
+        <button class="adj-btn" onclick="adj('pnds',-1)">−</button>
+        <span class="adj-val" id="pnds-v">57.4</span>
+        <button class="adj-btn" onclick="adj('pnds',1)">+</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-      return {
-        ratio_pct : +(ratio * 100).toFixed(1),
-        t_nds     : +(Tnds / 9.81).toFixed(1),
-        beta_ds   : +(Math.asin(Math.min(sa,0.9999)) * 180 / Math.PI).toFixed(2),
-        beta_nds  : +(Math.asin(Math.min(sb,0.9999)) * 180 / Math.PI).toFixed(2),
-        K_lat     : +Kl.toFixed(1),
-        K_rad     : +Kr.toFixed(0),
-        F_lat_kgf : +(Flat / 9.81).toFixed(1),
-        F_rad_kgf : +(Frad / 9.81).toFixed(1),
-        L_ds_mm   : +(La * 1000).toFixed(1),
-        L_nds_mm  : +(Lb * 1000).toFixed(1),
-        ftf       : +(d_ds + d_nds).toFixed(1),
-      };
-    }
+<!-- TABS -->
+<nav class="tab-nav">
+  <button class="tab-btn on" onclick="setTab('geo')">Geometry</button>
+  <button class="tab-btn" onclick="setTab('tension')">Tension balance</button>
+  <button class="tab-btn" onclick="setTab('strength')">Strength</button>
+  <button class="tab-btn" onclick="setTab('data')">Data table</button>
+</nav>
 
-    // ── CHRIS KING PRESETS ────────────────────────────────────────────────────────
-    const PRESETS = [
-      { id:'r142', short:'ISO 135/142', name:'CK ISO 135/142 Rear',      OLD:142, type:'rear',  d_ds:20.1, d_nds:33.9, pcd_ds:57.4, pcd_nds:57.4 },
-      { id:'r148', short:'Boost 148',   name:'CK Boost 148×12 Rear',     OLD:148, type:'rear',  d_ds:24.0, d_nds:36.3, pcd_ds:57.4, pcd_nds:57.4 },
-      { id:'r157', short:'Superbst 157',name:'CK Superboost 157×12 Rear',OLD:157, type:'rear',  d_ds:28.8, d_nds:40.3, pcd_ds:57.4, pcd_nds:57.4 },
-      { id:'r157b',short:'Spank 150/157',name:'Spank 150/157 Rear',    OLD:157, type:'rear',  d_ds:29.5, d_nds:39.5, pcd_ds:58.0, pcd_nds:58.0 },
-      { id:'f100', short:'R45D 100F',   name:'CK R45D CL Front 100×12',  OLD:100, type:'front', d_ds:30.6, d_nds:22.3, pcd_ds:57.4, pcd_nds:57.4 },
-      { id:'f110a',short:'Boost 6B 110F',name:'CK Boost 6-Bolt Front 110×15',OLD:110,type:'front',d_ds:36.3,d_nds:27.3,pcd_ds:57.4,pcd_nds:57.4 },
-      { id:'f110b',short:'Boost CL 110F',name:'CK Boost CL Front 110×15', OLD:110, type:'front', d_ds:35.5, d_nds:27.5, pcd_ds:57.4, pcd_nds:57.4 },
-    ];
+<!-- TAB: GEOMETRY -->
+<div id="tab-geo" class="panel">
+  <div class="grid2" style="margin-bottom:16px">
 
-    // ── COLOUR FUNCTIONS ──────────────────────────────────────────────────────────
-    const rCol = (r, type) => {
-      if (type === 'front') {
-        if (r <= 112) return '#22c55e';
-        if (r <= 128) return '#84cc16';
-        return '#eab308';
-      }
-      if (r >= 90) return '#22c55e';
-      if (r >= 80) return '#84cc16';
-      if (r >= 70) return '#eab308';
-      if (r >= 60) return '#f97316';
-      return '#ef4444';
-    };
+    <!-- Cross-section -->
+    <div class="card">
+      <div class="section-lbl" id="xs-title">Boost 148×12 — cross-section</div>
+      <svg id="xsec" viewBox="0 0 400 160" style="width:100%;height:auto;display:block;margin-top:8px">
+        <line id="xs-sk-nds" x1="165" y1="57" x2="200" y2="12" stroke="#2563eb" stroke-width="1" opacity=".25"/>
+        <line id="xs-sk-ds"  x1="248" y1="57" x2="200" y2="12" stroke="#d97706" stroke-width="1" opacity=".25"/>
+        <circle cx="200" cy="12" r="3.5" fill="none" stroke="#9ca3af" stroke-width="1"/>
+        <text x="208" y="15" font-size="9" fill="#9ca3af" font-family="system-ui,sans-serif">rim</text>
+        <line id="xs-old-h"  x1="118" y1="52" x2="282" y2="52" stroke="#d1d5db" stroke-width=".5"/>
+        <line id="xs-old-l"  x1="118" y1="48" x2="118" y2="56" stroke="#d1d5db" stroke-width=".5"/>
+        <line id="xs-old-r"  x1="282" y1="48" x2="282" y2="56" stroke="#d1d5db" stroke-width=".5"/>
+        <text id="xs-old-t"  x="200" y="48" text-anchor="middle" font-size="9" fill="#9ca3af" font-family="system-ui,sans-serif">OLD 148 mm</text>
+        <line id="xs-axle" x1="112" y1="86" x2="288" y2="86" stroke="#9ca3af" stroke-width="2"/>
+        <rect id="xs-body" x="161" y="81" width="78" height="10" fill="var(--card2)" stroke="var(--bdr2)" stroke-width=".5"/>
+        <rect id="xs-cl" x="106" y="72" width="6" height="28" fill="var(--card2)" stroke="var(--bdr2)" stroke-width=".5" rx="1"/>
+        <rect id="xs-cr" x="288" y="72" width="6" height="28" fill="var(--card2)" stroke="var(--bdr2)" stroke-width=".5" rx="1"/>
+        <rect id="xs-nds" x="157" y="65" width="8" height="42" fill="#2563eb" rx="1"/>
+        <rect id="xs-ds"  x="244" y="65" width="8" height="42" fill="#d97706" rx="1"/>
+        <text id="xs-pnds" x="161" y="61" text-anchor="middle" font-size="8" fill="#2563eb" font-family="system-ui,sans-serif">⌀57.4</text>
+        <text id="xs-pds"  x="248" y="61" text-anchor="middle" font-size="8" fill="#d97706" font-family="system-ui,sans-serif">⌀57.4</text>
+        <line x1="200" y1="65" x2="200" y2="118" stroke="#e5e7eb" stroke-width=".5" stroke-dasharray="3,2"/>
+        <line id="xs-dl-nds" x1="161" y1="111" x2="200" y2="111" stroke="#2563eb" stroke-width="1"/>
+        <line id="xs-dt-nds" x1="161" y1="108" x2="161" y2="114" stroke="#2563eb" stroke-width="1"/>
+        <line id="xs-dc-l"   x1="200" y1="108" x2="200" y2="114" stroke="#2563eb" stroke-width="1"/>
+        <text id="xs-lb-nds" x="180" y="124" text-anchor="middle" font-size="10" fill="#2563eb" font-family="system-ui,sans-serif">NDS 36.3 mm</text>
+        <line id="xs-dl-ds"  x1="200" y1="111" x2="248" y2="111" stroke="#d97706" stroke-width="1"/>
+        <line id="xs-dt-ds"  x1="248" y1="108" x2="248" y2="114" stroke="#d97706" stroke-width="1"/>
+        <text id="xs-lb-ds"  x="224" y="124" text-anchor="middle" font-size="10" fill="#d97706" font-family="system-ui,sans-serif">DS 24.0 mm</text>
+        <text id="xs-ftf"    x="200" y="140" text-anchor="middle" font-size="9" fill="#9ca3af" font-family="system-ui,sans-serif">flange-to-flange: 60.3 mm</text>
+        <text id="xs-info"   x="200" y="154" text-anchor="middle" font-size="9" fill="#9ca3af" font-family="system-ui,sans-serif">ERD 600 mm · 32H · 3×</text>
+      </svg>
+      <div style="display:flex;gap:16px;font-size:11px;color:var(--txt2);margin-top:6px">
+        <span><span style="width:9px;height:9px;background:#2563eb;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle"></span>NDS flange</span>
+        <span><span style="width:9px;height:9px;background:#d97706;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle"></span>DS flange</span>
+        <span style="color:var(--txt3)">Faint lines = spoke paths to rim</span>
+      </div>
+    </div>
 
-    const gCol = (v, mx) => {
-      const colors = ['#ef4444','#f97316','#eab308','#84cc16','#22c55e'];
-      return colors[Math.min(Math.floor(v/mx*5),4)];
-    };
-
-    // ── CROSS-SECTION SVG ─────────────────────────────────────────────────────────
-    function CrossSection({ d_ds, d_nds, pcd_ds, pcd_nds, OLD, type, width=320, compact=false }) {
-      const H   = compact ? 110 : 160;
-      const CX  = width / 2;
-      const AY  = compact ? 44 : 62;
-      const FH  = compact ? 16 : 26;
-      const SC  = Math.min(width / (Math.max(OLD || (d_ds+d_nds+40), 80) + 20), 1.6);
-
-      const dx  = CX + d_ds  * SC;
-      const nx  = CX - d_nds * SC;
-      const rx  = OLD ? CX + (OLD/2)*SC : dx + 10;
-      const lx  = OLD ? CX - (OLD/2)*SC : nx - 10;
-      const gid = `g${Math.random().toString(36).slice(2,7)}`;
-
-      return (
-        <svg width={width} height={H} style={{ display:'block', overflow:'visible' }}>
-          <defs>
-            <linearGradient id={`${gid}b`} x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%"   stopColor="#1d4ed8"/>
-              <stop offset="50%"  stopColor="#60a5fa"/>
-              <stop offset="100%" stopColor="#1d4ed8"/>
-            </linearGradient>
-            <linearGradient id={`${gid}a`} x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%"   stopColor="#92400e"/>
-              <stop offset="50%"  stopColor="#fbbf24"/>
-              <stop offset="100%" stopColor="#92400e"/>
-            </linearGradient>
-          </defs>
-
-          <line x1={dx} y1={AY - pcd_ds*SC*0.18}  x2={CX} y2={compact?5:8} stroke="#f59e0b" strokeWidth={0.8} opacity={0.3}/>
-          <line x1={nx} y1={AY - pcd_nds*SC*0.18} x2={CX} y2={compact?5:8} stroke="#3b82f6" strokeWidth={0.8} opacity={0.3}/>
-          <circle cx={CX} cy={compact?5:8} r={3} fill="none" stroke="#1e3050" strokeWidth={1}/>
-          {!compact && <text x={CX+8} y={12} fill="#1e3050" fontSize={7} fontFamily="monospace">RIM</text>}
-
-          {OLD && <>
-            <line x1={lx} y1={AY-FH-10} x2={rx} y2={AY-FH-10} stroke="#1e3050" strokeWidth={1}/>
-            <line x1={lx} y1={AY-FH-13} x2={lx} y2={AY-FH-7}  stroke="#1e3050" strokeWidth={1}/>
-            <line x1={rx} y1={AY-FH-13} x2={rx} y2={AY-FH-7}  stroke="#1e3050" strokeWidth={1}/>
-            <text x={CX} y={AY-FH-12} textAnchor="middle" fill="#2d4a6a" fontSize={compact?7:8} fontFamily="monospace">OLD {OLD}mm</text>
-          </>}
-
-          <line x1={lx-5} y1={AY} x2={rx+5} y2={AY} stroke="#1e3050" strokeWidth={2}/>
-          <rect x={nx} y={AY-5} width={Math.max(dx-nx,1)} height={10} fill="#0a1620" stroke="#1e3050" strokeWidth={1}/>
-          <rect x={lx-6} y={AY-14} width={6} height={28} fill="#142030" rx={1}/>
-          <rect x={rx}   y={AY-14} width={6} height={28} fill="#142030" rx={1}/>
-          <rect x={nx-4} y={AY-FH} width={8} height={FH*2} fill={`url(#${gid}b)`} rx={1}/>
-          <rect x={dx-4} y={AY-FH} width={8} height={FH*2} fill={`url(#${gid}a)`} rx={1}/>
-
-          {!compact && <>
-            <text x={nx} y={AY-FH-4} textAnchor="middle" fill="#60a5fa" fontSize={7} fontFamily="monospace">⌀{pcd_nds}</text>
-            <text x={dx} y={AY-FH-4} textAnchor="middle" fill="#fbbf24" fontSize={7} fontFamily="monospace">⌀{pcd_ds}</text>
-          </>}
-
-          <line x1={CX} y1={AY-FH} x2={CX} y2={AY+FH+18} stroke="#1e3050" strokeWidth={1} strokeDasharray="3,2"/>
-
-          <line x1={nx} y1={AY+FH+5} x2={CX} y2={AY+FH+5} stroke="#3b82f6" strokeWidth={1}/>
-          <line x1={nx} y1={AY+FH+2} x2={nx} y2={AY+FH+8} stroke="#3b82f6" strokeWidth={1}/>
-          <line x1={CX} y1={AY+FH+2} x2={CX} y2={AY+FH+8} stroke="#3b82f6" strokeWidth={1}/>
-          <text x={(nx+CX)/2} y={AY+FH+17} textAnchor="middle" fill="#60a5fa" fontSize={compact?8:9} fontFamily="monospace">
-            {type==='rear'?'NDS':'L'} {d_nds}mm
-          </text>
-
-          <line x1={CX}  y1={AY+FH+5} x2={dx} y2={AY+FH+5} stroke="#f59e0b" strokeWidth={1}/>
-          <line x1={dx}  y1={AY+FH+2} x2={dx} y2={AY+FH+8} stroke="#f59e0b" strokeWidth={1}/>
-          <text x={(CX+dx)/2} y={AY+FH+17} textAnchor="middle" fill="#fbbf24" fontSize={compact?8:9} fontFamily="monospace">
-            {type==='rear'?'DS':'R'} {d_ds}mm
-          </text>
-
-          {!compact &&
-            <text x={CX} y={H-4} textAnchor="middle" fill="#2d4a6a" fontSize={7} fontFamily="monospace">
-              F–F: {(d_ds+d_nds).toFixed(1)}mm
-            </text>
-          }
-        </svg>
-      );
-    }
-
-    // ── CUSTOM TOOLTIP ────────────────────────────────────────────────────────────
-    const ChartTip = ({active, payload, label}) => {
-      if (!active || !payload || !payload.length) return null;
-      return (
-        <div style={{background:'#0b1826',border:'1px solid #1e3050',padding:'8px 12px',fontFamily:'monospace',fontSize:11}}>
-          <p style={{color:'#5a80a0',margin:'0 0 4px',fontSize:10}}>{label}</p>
-          {payload.map((p,i) => <p key={i} style={{color:p.fill||'#94a3b8',margin:'2px 0'}}>{p.name}: {p.value}</p>)}
+    <!-- Metrics -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="grid2">
+        <div class="mcard">
+          <div class="ml">NDS/DS tension ratio</div>
+          <div class="mv" id="m-ratio">—</div>
+          <div class="ms">target ≥ 80%</div>
         </div>
-      );
+        <div class="mcard">
+          <div class="ml">NDS tension</div>
+          <div class="mv" id="m-tnds">—</div>
+          <div class="ms" id="m-tnds-s">at 100 kgf DS ref</div>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="mcard">
+          <div class="ml">β DS bracing angle</div>
+          <div class="mv" id="m-bds" style="font-size:17px">—</div>
+          <div class="ms" id="m-lds">spoke — mm</div>
+        </div>
+        <div class="mcard">
+          <div class="ml">β NDS bracing angle</div>
+          <div class="mv" id="m-bnds" style="font-size:17px">—</div>
+          <div class="ms" id="m-lnds">spoke — mm</div>
+        </div>
+      </div>
+      <div class="grid3">
+        <div class="mcard">
+          <div class="ml">K_lat</div>
+          <div class="mv" id="m-kl" style="font-size:17px">—</div>
+          <div class="ms">N/mm</div>
+        </div>
+        <div class="mcard">
+          <div class="ml">F_lat</div>
+          <div class="mv" id="m-fl" style="font-size:17px">—</div>
+          <div class="ms">kgf</div>
+        </div>
+        <div class="mcard">
+          <div class="ml">F_rad ★</div>
+          <div class="mv" id="m-fr" style="font-size:17px">—</div>
+          <div class="ms">kgf</div>
+        </div>
+      </div>
+      <p class="note">★ F_rad: min. radial force for bottom spoke to reach 0 kgf (Ford primary strength metric). 3 mm offset approximation: <strong>d_DS + 3, d_NDS − 3</strong> — same hub, adjusted effective geometry. Spoke lengths assumed constant (approximation).</p>
+    </div>
+  </div>
+
+  <!-- Mini hub grid -->
+  <div class="section-lbl">All presets — click to select</div>
+  <div class="grid4" id="mini-grid"></div>
+</div>
+
+<!-- TAB: TENSION -->
+<div id="tab-tension" class="panel" hidden>
+  <div class="legend">
+    <span><span class="lg-dot" style="background:#378ADD"></span>0 mm rim (standard)</span>
+    <span><span class="lg-dot" style="background:#1D9E75"></span>3 mm DS-offset rim</span>
+    <span style="color:var(--txt3)">Vertical line = 80% target for rear hubs</span>
+  </div>
+  <div style="position:relative;height:280px">
+    <canvas id="tc" role="img" aria-label="Horizontal grouped bar chart comparing NDS/DS tension ratio at 0mm and 3mm offset for each hub">NDS/DS tension ratios for Chris King MTB rear hubs at 0mm and 3mm offset.</canvas>
+  </div>
+  <div class="grid2" style="margin-top:14px">
+    <div class="card2">
+      <p style="font-size:13px;font-weight:500;margin-bottom:5px">Why tension balance matters</p>
+      <p class="note">Wheel strength scales with NDS tension, not DS. The NDS bottom spoke buckles first under any load. Equilibrium: <em>T_DS × sin β_DS = T_NDS × sin β_NDS</em>. The 3 mm offset increases the effective DS angle and decreases the NDS angle, improving the ratio by ~14–15 percentage points.</p>
+    </div>
+    <div class="card2">
+      <p style="font-size:13px;font-weight:500;margin-bottom:5px">Offset rim approximation</p>
+      <p class="note">Because we use Matt Ford's TK540 rim model (which does not natively support offset), the 3 mm offset is applied as an adjustment to the effective hub flange distances: <strong>d_DS_eff = d_DS + 3 mm, d_NDS_eff = d_NDS − 3 mm</strong>. In a real build, spoke lengths would be recalculated accordingly.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: STRENGTH -->
+<div id="tab-strength" class="panel" hidden>
+  <div class="grid2" style="margin-bottom:12px">
+    <div>
+      <div class="section-lbl">F_rad — radial strength (kgf) · Ford primary metric</div>
+      <div class="legend">
+        <span><span class="lg-dot" style="background:#7c3aed"></span>0 mm</span>
+        <span><span class="lg-dot" style="background:#a78bfa"></span>3 mm offset</span>
+      </div>
+      <div style="position:relative;height:220px">
+        <canvas id="frc" role="img" aria-label="Grouped bar chart of radial strength at 0mm and 3mm offset">Radial strength comparison.</canvas>
+      </div>
+    </div>
+    <div>
+      <div class="section-lbl">F_lat — lateral strength (kgf)</div>
+      <div class="legend">
+        <span><span class="lg-dot" style="background:#d97706"></span>0 mm</span>
+        <span><span class="lg-dot" style="background:#fbbf24"></span>3 mm offset</span>
+      </div>
+      <div style="position:relative;height:220px">
+        <canvas id="flc" role="img" aria-label="Grouped bar chart of lateral strength at 0mm and 3mm offset">Lateral strength comparison.</canvas>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="section-lbl">K_lat — lateral stiffness (N/mm)</div>
+    <div class="legend">
+      <span><span class="lg-dot" style="background:#0d9488"></span>0 mm</span>
+      <span><span class="lg-dot" style="background:#5eead4"></span>3 mm offset</span>
+    </div>
+    <div style="position:relative;height:130px">
+      <canvas id="klc" role="img" aria-label="Grouped bar chart of lateral stiffness at 0mm and 3mm offset">Lateral stiffness comparison.</canvas>
+    </div>
+  </div>
+  <p class="note" style="margin-top:10px">Dashed reference line = ~38 kgf (estimated static rear load, 75 kg rider). Radial failure is always the binding limit — F_rad is 1.5–3× lower than F_lat. K_lat changes by only ±2–3 N/mm between 0 mm and 3 mm offset.</p>
+</div>
+
+<!-- TAB: DATA -->
+<div id="tab-data" class="panel" hidden>
+  <p class="note" id="data-sub" style="margin-bottom:10px">Computed at current settings</p>
+  <div style="overflow-x:auto">
+    <table id="dtbl">
+      <thead>
+        <tr>
+          <th>Hub</th><th>OLD mm</th><th>Offset</th>
+          <th>d_DS mm</th><th>d_NDS mm</th><th>F–F mm</th>
+          <th>NDS/DS %</th><th>β_DS °</th><th>β_NDS °</th>
+          <th>K_lat N/mm</th><th>F_lat kgf</th><th>F_rad kgf</th>
+        </tr>
+      </thead>
+      <tbody id="dtbody"></tbody>
+    </table>
+  </div>
+  <p class="note" style="margin-top:10px">
+    <strong>F–F mm</strong> = flange-to-flange width (hub property, unchanged by rim offset) ·
+    <strong>β</strong> = lateral bracing angle = arcsin(d / spoke length) ·
+    <strong>K_lat</strong> = lateral stiffness at contact patch (Mode Matrix) ·
+    <strong>F_lat</strong> = min. lateral force for weak-side spoke to reach 0 kgf ·
+    <strong>F_rad ★</strong> = min. radial force for bottom spoke to reach 0 kgf
+  </p>
+</div>
+
+<footer style="margin-top:24px;padding-top:12px;border-top:0.5px solid var(--bdr);font-size:11px;color:var(--txt3)">
+  Ford, M. (2018) Reinventing the Wheel — Northwestern University ·
+  Ford, Papadopoulos &amp; Balogun (2016) Buckling of the Bicycle Wheel ·
+  Hub dimensions: chrisking.com / velodrop.com (2024) ·
+  github.com/dashdotrobot/bike-wheel-calc
+</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const HUBS={
+  r142:{name:'CK ISO 135/142',short:'ISO 135/142',OLD:142,dds:20.1,dnds:33.9,pds:57.4,pnds:57.4},
+  r148:{name:'CK Boost 148×12',short:'Boost 148×12',OLD:148,dds:24.0,dnds:36.3,pds:57.4,pnds:57.4},
+  r157a:{name:'CK Superboost 157',short:'Superbst 157',OLD:157,dds:28.8,dnds:40.3,pds:57.4,pnds:57.4},
+  r157b:{name:'CK DH G2 157',short:'DH G2 157',OLD:157,dds:28.5,dnds:39.6,pds:57.4,pnds:57.4},
+  custom:{name:'Custom hub',short:'Custom',OLD:null,dds:24.0,dnds:36.3,pds:57.4,pnds:57.4}
+};
+const ORDER=['r142','r148','r157a','r157b','custom'];
+const ST={erd:534,nsp:32,tDS:100,hubId:'r148',offset:0};
+
+function eff(h,off){
+  if(!off)return{dds:h.dds,dnds:h.dnds};
+  return{dds:+(h.dds+off).toFixed(1),dnds:+(h.dnds-off).toFixed(1)};
+}
+
+function calc(dds,dnds,pds,pnds){
+  const EA=210e9*Math.PI*1e-6,EIL=50,EIR=150,GJ=40;
+  const Rr=ST.erd/2/1000+0.011;
+  const coeff=Math.PI/Math.pow(Rr,3);
+  const Ns=Math.floor(ST.nsp/2),Re=ST.erd/2/1000;
+  const cos_x=Math.cos(4*Math.PI*3/Ns),T=ST.tDS*9.81;
+  const Rfa=pds/2/1000,Rfb=pnds/2/1000,da=dds/1000,db=dnds/1000;
+  const r2a=Re*Re+Rfa*Rfa-2*Re*Rfa*cos_x;
+  const r2b=Re*Re+Rfb*Rfb-2*Re*Rfb*cos_x;
+  const La=Math.sqrt(da*da+r2a),Lb=Math.sqrt(db*db+r2b);
+  const sa=da/La,sb=db/Lb,ratio=sa/sb,Tnds=T*ratio;
+  const Ka=EA/La,Kb=EA/Lb;
+  const kla=T/La+Ka*sa*sa,klb=Tnds/Lb+Kb*sb*sb;
+  const kra=T/La+Ka*(r2a/(da*da+r2a)),krb=Tnds/Lb+Kb*(r2b/(db*db+r2b));
+  const Ksl=(Ns/2)*(kla+klb),Ksr=(Ns/2)*(kra+krb);
+  let Cl=1/(2*Ksl),Cr=1/(2*Ksr);
+  for(let m=1;m<=Ns;m++){const q=m*m;Cl+=1/(Ksl+coeff*(EIL*(q-1)*(q-1)+GJ*(q-1)));Cr+=1/(Ksr+coeff*EIR*(q-1)*(q-1));}
+  const Kl=1/Cl/1000,Kr=1/Cr/1000;
+  const Fl=Tnds*Kl*1e3/(EA*sb/Lb),Fr=Tnds*Kr*1e3/(EA/Lb);
+  return{ratio:ratio*100,tnds:Tnds/9.81,bd:Math.asin(Math.min(sa,.9999))*180/Math.PI,
+    bn:Math.asin(Math.min(sb,.9999))*180/Math.PI,Kl,Kr,Fl:Fl/9.81,Fr:Fr/9.81,Lds:La*1000,Lnds:Lb*1000};
+}
+
+function hub_calc(hid,off){
+  const h=HUBS[hid],e=eff(h,off);
+  return{...calc(e.dds,e.dnds,h.pds,h.pnds),dds:e.dds,dnds:e.dnds};
+}
+
+function rCol(r){
+  if(r>=85)return'#059669';if(r>=75)return'#65a30d';if(r>=65)return'#d97706';if(r>=55)return'#ea580c';return'#dc2626';
+}
+
+function fmt(v,d=1){return(+v).toFixed(d);}
+
+function updateSVG(){
+  const h=HUBS[ST.hubId],e=eff(h,ST.offset);
+  const SC=1.08,CX=200,AY=86,FH=21;
+  const dx=CX+e.dds*SC,nx=CX-e.dnds*SC;
+  const rx=h.OLD?CX+h.OLD/2*SC:dx+14,lx=h.OLD?CX-h.OLD/2*SC:nx-14;
+  function s(id){return document.getElementById(id);}
+  function sl(id,x1,y1,x2,y2){const e=s(id);if(!e)return;['x1','y1','x2','y2'].forEach((a,i)=>e.setAttribute(a,[x1,y1,x2,y2][i].toFixed(1)));}
+  function sr(id,x,y,w,h2){const e=s(id);if(!e)return;e.setAttribute('x',x.toFixed(1));e.setAttribute('y',y.toFixed(1));e.setAttribute('width',Math.max(w,1).toFixed(1));e.setAttribute('height',h2);}
+  function st(id,v){const e=s(id);if(e)e.textContent=v;}
+  function sa2(id,a,v){const e=s(id);if(e)e.setAttribute(a,typeof v==='number'?v.toFixed(1):v);}
+  sl('xs-axle',lx-5,AY,rx+5,AY);
+  sr('xs-body',nx,AY-5,dx-nx,10);
+  sr('xs-cl',lx-7,AY-14,7,28);sr('xs-cr',rx,AY-14,7,28);
+  sr('xs-nds',nx-4,AY-FH,8,FH*2);sr('xs-ds',dx-4,AY-FH,8,FH*2);
+  sl('xs-sk-nds',nx,AY-FH,CX,12);sl('xs-sk-ds',dx,AY-FH,CX,12);
+  sa2('xs-pnds','x',nx);sa2('xs-pds','x',dx);
+  st('xs-pnds','⌀'+h.pnds.toFixed(1));st('xs-pds','⌀'+h.pds.toFixed(1));
+  if(h.OLD){sl('xs-old-h',lx,AY-FH-12,rx,AY-FH-12);sl('xs-old-l',lx,AY-FH-15,lx,AY-FH-9);sl('xs-old-r',rx,AY-FH-15,rx,AY-FH-9);sa2('xs-old-t','x',CX);st('xs-old-t','OLD '+h.OLD+' mm');}
+  const dy=AY+FH+8;
+  sl('xs-dl-nds',nx,dy,CX,dy);sl('xs-dt-nds',nx,dy-3,nx,dy+3);sl('xs-dc-l',CX,dy-3,CX,dy+3);
+  sa2('xs-lb-nds','x',(nx+CX)/2);st('xs-lb-nds','NDS '+e.dnds.toFixed(1)+' mm');
+  sl('xs-dl-ds',CX,dy,dx,dy);sl('xs-dt-ds',dx,dy-3,dx,dy+3);
+  sa2('xs-lb-ds','x',(CX+dx)/2);st('xs-lb-ds','DS '+e.dds.toFixed(1)+' mm');
+  st('xs-ftf','flange-to-flange: '+(h.dds+h.dnds).toFixed(1)+' mm (hub property)');
+  st('xs-info','ERD '+ST.erd+' mm · '+ST.nsp+'H · 3-cross · '+ST.offset+'mm offset');
+  const ot=document.getElementById('xs-title');
+  if(ot)ot.textContent=h.name+(ST.offset?' — 3 mm DS-offset':' — standard rim');
+}
+
+function updateMetrics(){
+  const h=HUBS[ST.hubId],e=eff(h,ST.offset);
+  const m=calc(e.dds,e.dnds,h.pds,h.pnds);
+  function set(id,v){const el=document.getElementById(id);if(el)el.textContent=v;}
+  const rc=rCol(m.ratio);
+  const rel=document.getElementById('m-ratio');
+  if(rel){rel.textContent=fmt(m.ratio)+'%';rel.style.color=rc;}
+  set('m-tnds',fmt(m.tnds)+' kgf');set('m-tnds-s','at '+ST.tDS+' kgf DS ref');
+  set('m-bds',fmt(m.bd,2)+'°');set('m-bnds',fmt(m.bn,2)+'°');
+  set('m-lds','spoke '+fmt(m.Lds,1)+' mm');set('m-lnds','spoke '+fmt(m.Lnds,1)+' mm');
+  set('m-kl',fmt(m.Kl,1));set('m-fl',fmt(m.Fl,1));set('m-fr',fmt(m.Fr,1));
+}
+
+function buildMiniGrid(){
+  const g=document.getElementById('mini-grid');if(!g)return;g.innerHTML='';
+  ORDER.forEach(id=>{
+    const h=HUBS[id];
+    const m0=hub_calc(id,0),m3=hub_calc(id,3);
+    const rc=rCol(m0.ratio);
+    const div=document.createElement('div');
+    div.className='mini-card'+(id===ST.hubId?' on':'');
+    div.id='mini-'+id;
+    div.onclick=()=>{
+      document.querySelectorAll('[data-id]').forEach(b=>b.classList.toggle('on',b.dataset.id===id));
+      ST.hubId=id;
+      document.getElementById('custom-row').style.display=id==='custom'?'flex':'none';
+      refresh();
     };
+    div.innerHTML=`<div class="mini-name">${h.short}</div>
+      <div class="mini-r0" style="color:${rc}">${fmt(m0.ratio)}%</div>
+      <div class="mini-r3">→ ${fmt(m3.ratio)}% <span style="color:${rCol(m3.ratio)}">+${fmt(m3.ratio-m0.ratio,1)}pp</span></div>
+      <div style="font-size:10px;color:var(--txt3);margin-top:2px">OLD ${h.OLD||'—'}mm</div>`;
+    g.appendChild(div);
+  });
+}
 
-    // ── SLIDER ─────────���──────────────────────────────────────────────────────────
-    function Slider({ label, value, min, max, step=0.1, unit='mm', color='#60a5fa', onChange }) {
-      return (
-        <div style={{marginBottom:10}}>
-          <div style={{display:'flex',justifyContent:'space-between',marginBottom:3}}>
-            <span style={{fontFamily:'monospace',fontSize:10,color:'#5a80a0'}}>{label}</span>
-            <span style={{fontFamily:'monospace',fontSize:11,color,fontWeight:'bold'}}>{value}{unit}</span>
-          </div>
-          <input type="range" min={min} max={max} step={step} value={value}
-            onChange={e => onChange(+e.target.value)}
-            style={{width:'100%',accentColor:color,cursor:'pointer'}}/>
-          <div style={{display:'flex',justifyContent:'space-between',fontSize:8,color:'#2d4a6a',marginTop:1}}>
-            <span>{min}{unit}</span><span>{max}{unit}</span>
-          </div>
-        </div>
-      );
-    }
+let tChart,frChart,flChart,klChart;
+function initCharts(){
+  const labels=ORDER.map(id=>HUBS[id].short);
+  const d0=ORDER.map(id=>+fmt(hub_calc(id,0).ratio));
+  const d3=ORDER.map(id=>+fmt(hub_calc(id,3).ratio));
+  const fr0=ORDER.map(id=>+fmt(hub_calc(id,0).Fr));
+  const fr3=ORDER.map(id=>+fmt(hub_calc(id,3).Fr));
+  const fl0=ORDER.map(id=>+fmt(hub_calc(id,0).Fl));
+  const fl3=ORDER.map(id=>+fmt(hub_calc(id,3).Fl));
+  const kl0=ORDER.map(id=>+fmt(hub_calc(id,0).Kl));
+  const kl3=ORDER.map(id=>+fmt(hub_calc(id,3).Kl));
+  const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},animation:{duration:250}};
+  const gCol='rgba(0,0,0,0.06)',tCol='#6b7280';
+  tChart=new Chart(document.getElementById('tc'),{type:'bar',
+    data:{labels,datasets:[{label:'0 mm',data:d0,backgroundColor:'#378ADD',borderRadius:3},{label:'3 mm offset',data:d3,backgroundColor:'#1D9E75',borderRadius:3}]},
+    options:{...base,indexAxis:'y',scales:{x:{min:0,max:110,grid:{color:gCol},ticks:{color:tCol},title:{display:true,text:'NDS/DS tension ratio (%)',color:tCol,font:{size:11}}},y:{grid:{color:gCol},ticks:{color:tCol}}},plugins:{legend:{display:false},annotation:{annotations:{t80:{type:'line',value:80,scaleID:'x',borderColor:'#dc2626',borderWidth:1.5,borderDash:[5,3]}}}}}});
+  frChart=new Chart(document.getElementById('frc'),{type:'bar',
+    data:{labels,datasets:[{label:'0 mm',data:fr0,backgroundColor:'#7c3aed',borderRadius:3},{label:'3 mm',data:fr3,backgroundColor:'#a78bfa',borderRadius:3}]},
+    options:{...base,scales:{x:{grid:{color:gCol},ticks:{color:tCol,font:{size:11},maxRotation:30}},y:{grid:{color:gCol},ticks:{color:tCol},title:{display:true,text:'kgf',color:tCol,font:{size:11}}}},plugins:{legend:{display:false},annotation:{annotations:{r38:{type:'line',value:38,scaleID:'y',borderColor:'#dc2626',borderWidth:1.5,borderDash:[5,3]}}}}}});
+  flChart=new Chart(document.getElementById('flc'),{type:'bar',
+    data:{labels,datasets:[{label:'0 mm',data:fl0,backgroundColor:'#d97706',borderRadius:3},{label:'3 mm',data:fl3,backgroundColor:'#fbbf24',borderRadius:3}]},
+    options:{...base,scales:{x:{grid:{color:gCol},ticks:{color:tCol,font:{size:11},maxRotation:30}},y:{grid:{color:gCol},ticks:{color:tCol},title:{display:true,text:'kgf',color:tCol,font:{size:11}}}},plugins:{legend:{display:false}}}});
+  klChart=new Chart(document.getElementById('klc'),{type:'bar',
+    data:{labels,datasets:[{label:'0 mm',data:kl0,backgroundColor:'#0d9488',borderRadius:3},{label:'3 mm',data:kl3,backgroundColor:'#5eead4',borderRadius:3}]},
+    options:{...base,scales:{x:{grid:{color:gCol},ticks:{color:tCol,font:{size:11}}},y:{grid:{color:gCol},ticks:{color:tCol},title:{display:true,text:'N/mm',color:tCol,font:{size:11}}}},plugins:{legend:{display:false}}}});
+}
 
-    // ── METRIC CARD ───────────────────────────────────────────────────────────────
-    function MetricCard({ label, value, unit, color, sub }) {
-      return (
-        <div style={{background:'#0a1620',border:`1px solid ${color}33`,borderRadius:3,padding:'10px 14px',textAlign:'center'}}>
-          <div style={{fontFamily:'monospace',fontSize:8,color:'#2d4a6a',letterSpacing:1,marginBottom:4}}>{label}</div>
-          <div style={{fontFamily:'monospace',fontSize:20,color,fontWeight:'300',lineHeight:1}}>{value}</div>
-          <div style={{fontFamily:'monospace',fontSize:9,color:'#2d4a6a',marginTop:2}}>{unit}</div>
-          {sub && <div style={{fontFamily:'monospace',fontSize:8,color,marginTop:4,opacity:0.7}}>{sub}</div>}
-        </div>
-      );
-    }
+function updateCharts(){
+  if(!tChart)return;
+  const d0=ORDER.map(id=>+fmt(hub_calc(id,0).ratio));
+  const d3=ORDER.map(id=>+fmt(hub_calc(id,3).ratio));
+  const fr0=ORDER.map(id=>+fmt(hub_calc(id,0).Fr));
+  const fr3=ORDER.map(id=>+fmt(hub_calc(id,3).Fr));
+  const fl0=ORDER.map(id=>+fmt(hub_calc(id,0).Fl));
+  const fl3=ORDER.map(id=>+fmt(hub_calc(id,3).Fl));
+  const kl0=ORDER.map(id=>+fmt(hub_calc(id,0).Kl));
+  const kl3=ORDER.map(id=>+fmt(hub_calc(id,3).Kl));
+  const ai=ORDER.indexOf(ST.hubId);
+  function hA(base,alpha){return ORDER.map((_,i)=>base+(i===ai?'ff':alpha));}
+  tChart.data.datasets[0].data=d0;tChart.data.datasets[1].data=d3;
+  tChart.data.datasets[0].backgroundColor=hA('#378ADD','aa');
+  tChart.data.datasets[1].backgroundColor=hA('#1D9E75','aa');
+  tChart.update();
+  frChart.data.datasets[0].data=fr0;frChart.data.datasets[1].data=fr3;
+  frChart.data.datasets[0].backgroundColor=hA('#7c3aed','aa');
+  frChart.data.datasets[1].backgroundColor=hA('#a78bfa','aa');
+  frChart.update();
+  flChart.data.datasets[0].data=fl0;flChart.data.datasets[1].data=fl3;
+  flChart.data.datasets[0].backgroundColor=hA('#d97706','aa');
+  flChart.data.datasets[1].backgroundColor=hA('#fbbf24','aa');
+  flChart.update();
+  klChart.data.datasets[0].data=kl0;klChart.data.datasets[1].data=kl3;
+  klChart.update();
+}
 
-    // ── MAIN COMPONENT ────────────────────────────────────────────────────────────
-    function HubAnalysis() {
-      const [tab,       setTab      ] = useState('geo');
-      const [wheelKey,  setWheelKey ] = useState('29"');
-      const [presetId,  setPresetId ] = useState('r148');
-      const [custom,    setCustom   ] = useState(false);
-      const [dDS,       setDDS      ] = useState(24.0);
-      const [dNDS,      setDNDS     ] = useState(36.3);
-      const [pcdDS,     setPcdDS    ] = useState(57.4);
-      const [pcdNDS,    setPcdNDS   ] = useState(57.4);
-      const [tDS,       setTDS      ] = useState(100);
-      const [nSpokes,   setNSpokes  ] = useState(32);
+function updateDataTable(){
+  const body=document.getElementById('dtbody');if(!body)return;
+  const sub=document.getElementById('data-sub');
+  if(sub)sub.textContent='ERD '+ST.erd+' mm · '+ST.nsp+'H · DS ref '+ST.tDS+' kgf · Mode Matrix (Ford 2018)';
+  body.innerHTML=ORDER.flatMap(id=>{
+    const h=HUBS[id],isAct=id===ST.hubId;
+    return[0,3].map(off=>{
+      const e=eff(h,off),m=calc(e.dds,e.dnds,h.pds,h.pnds);
+      const rc=rCol(m.ratio);
+      return`<tr${isAct?' class="hi"':''}>
+        <td>${h.short}</td><td>${h.OLD||'—'}</td>
+        <td>${off?'3 mm':'0 mm'}</td>
+        <td style="color:#d97706">${fmt(e.dds,1)}</td>
+        <td style="color:#2563eb">${fmt(e.dnds,1)}</td>
+        <td>${fmt(h.dds+h.dnds,1)}</td>
+        <td style="font-weight:500;color:${rc}">${fmt(m.ratio)}%</td>
+        <td style="color:#d97706">${fmt(m.bd,2)}</td>
+        <td style="color:#2563eb">${fmt(m.bn,2)}</td>
+        <td style="color:#0d9488">${fmt(m.Kl,1)}</td>
+        <td style="color:#d97706">${fmt(m.Fl,1)}</td>
+        <td style="color:#7c3aed">${fmt(m.Fr,1)}</td>
+      </tr>`;
+    });
+  }).join('');
+}
 
-      const erd = WHEEL_SIZES[wheelKey].erd;
+function refresh(){
+  updateSVG();updateMetrics();buildMiniGrid();updateCharts();updateDataTable();
+  if(ST.hubId==='custom'){
+    const c=HUBS.custom;
+    ['dds-v','dnds-v','pds-v','pnds-v'].forEach((id,i)=>{
+      const v=[c.dds,c.dnds,c.pds,c.pnds][i];
+      const el=document.getElementById(id);if(el)el.textContent=fmt(v,1);
+    });
+  }
+}
 
-      const hubParams = custom
-        ? { d_ds: dDS, d_nds: dNDS, pcd_ds: pcdDS, pcd_nds: pcdNDS, OLD: null, type: 'rear', name: 'Custom Hub' }
-        : { ...PRESETS.find(p => p.id === presetId) };
+function setTab(t){
+  ['geo','tension','strength','data'].forEach(n=>{
+    const p=document.getElementById('tab-'+n);if(p)p.hidden=(n!==t);
+  });
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    b.classList.toggle('on',b.textContent.toLowerCase().startsWith(t.slice(0,4)));
+  });
+}
 
-      const m = useMemo(() => calcWheel({
-        d_ds:  hubParams.d_ds,  d_nds: hubParams.d_nds,
-        pcd_ds:hubParams.pcd_ds,pcd_nds:hubParams.pcd_nds,
-        erd_mm:erd, t_ds:tDS, n_spokes:nSpokes
-      }), [hubParams.d_ds,hubParams.d_nds,hubParams.pcd_ds,hubParams.pcd_nds,erd,tDS,nSpokes]);
+function setWheel(btn,erd){
+  ['w26','w275','w29'].forEach(id=>{const b=document.getElementById(id);if(b)b.classList.remove('on');});
+  btn.classList.add('on');ST.erd=erd;refresh();
+}
+function setSpokes(btn,n){
+  ['s28','s32','s36'].forEach(id=>{const b=document.getElementById(id);if(b)b.classList.remove('on');});
+  btn.classList.add('on');ST.nsp=n;refresh();
+}
+function setOffset(btn,off){
+  ['off0','off3'].forEach(id=>{const b=document.getElementById(id);if(b)b.classList.remove('on');});
+  btn.classList.add('on');ST.offset=off;refresh();
+}
+function selHub(btn){
+  document.querySelectorAll('[data-id]').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');ST.hubId=btn.dataset.id;
+  document.getElementById('custom-row').style.display=btn.dataset.id==='custom'?'flex':'none';
+  refresh();
+}
+function adj(key,delta){
+  const map={dds:'dds',dnds:'dnds',pds:'pds',pnds:'pnds'};
+  const c=HUBS.custom;c[map[key]]=Math.max(1,+(c[map[key]]+delta).toFixed(1));
+  refresh();
+}
 
-      const allM = PRESETS.map(p => ({
-        ...p,
-        ...calcWheel({ d_ds:p.d_ds,d_nds:p.d_nds,pcd_ds:p.pcd_ds,pcd_nds:p.pcd_nds,
-                       erd_mm:erd,t_ds:tDS,n_spokes:nSpokes }),
-        isActive: !custom && p.id === presetId,
-      }));
-      
-      const customRow = custom ? [{
-        id:'custom',short:'CUSTOM',name:'Custom Hub',type:'rear',OLD:null,
-        d_ds:dDS,d_nds:dNDS,pcd_ds:pcdDS,pcd_nds:pcdNDS,isActive:true,...m
-      }] : [];
-      
-      const chartData = [...allM, ...customRow];
-      const rc = rCol(m.ratio_pct, hubParams.type);
-
-      const BG   = '#060d18';
-      const CARD = '#0b1826';
-      const BDR  = '#1e3050';
-      const GRN  = '#2d9b5a';
-
-      const tabBtn = (id, label) => (
-        <button key={id} onClick={()=>setTab(id)} style={{
-          background:'none',border:'none',cursor:'pointer',padding:'10px 16px',
-          fontFamily:'monospace',fontSize:9,letterSpacing:1.5,textTransform:'uppercase',
-          color: tab===id ? '#60a5fa' : '#2d4a6a',
-          borderBottom: tab===id ? '2px solid #3b82f6' : '2px solid transparent',
-        }}>{label}</button>
-      );
-
-      return (
-        <div style={{background:BG,minHeight:'100vh',fontFamily:'monospace',color:'#e2e8f0',fontSize:12}}>
-
-          {/* HEADER */}
-          <div style={{background:'linear-gradient(180deg,#0b1e36,#060d18)',borderBottom:`1px solid ${BDR}`,padding:'18px 24px 14px'}}>
-            <div style={{fontSize:9,color:'#3b82f6',letterSpacing:4,textTransform:'uppercase',marginBottom:4}}>
-              Chris King MTB Hubs · Wheel Engineering Analysis · Mode Matrix Model
-            </div>
-            <h1 style={{fontSize:20,fontWeight:300,margin:'0 0 4px',letterSpacing:2,color:'#f1f5f9'}}>
-              HUB STANDARDS &amp; WHEEL STRENGTH
-            </h1>
-            <p style={{margin:0,color:'#2d4a6a',fontSize:10}}>
-              Interactive: adjust hub geometry, wheel size, tension &amp; spoke count
-            </p>
-          </div>
-
-          {/* CONTROLS PANEL */}
-          <div style={{background:'#080f1a',borderBottom:`1px solid ${BDR}`,padding:'14px 24px'}}>
-            <div style={{display:'grid',gridTemplateColumns:'repeat(6, 1fr)',gap:'0 24px',alignItems:'start',flexWrap:'wrap'}}>
-
-              {/* Wheel size */}
-              <div>
-                <div style={{fontSize:8,color:'#2d4a6a',letterSpacing:2,marginBottom:6}}>WHEEL SIZE</div>
-                <div style={{display:'flex',gap:4}}>
-                  {Object.entries(WHEEL_SIZES).map(([k,v]) => (
-                    <button key={k} onClick={()=>setWheelKey(k)} style={{
-                      background: wheelKey===k ? '#1e3a8a' : '#0a1620',
-                      border: `1px solid ${wheelKey===k?'#3b82f6':BDR}`,
-                      color: wheelKey===k ? '#60a5fa' : '#2d4a6a',
-                      cursor:'pointer',padding:'4px 10px',fontFamily:'monospace',fontSize:9,borderRadius:2,
-                    }}>{k}</button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Spoke count */}
-              <div>
-                <div style={{fontSize:8,color:'#2d4a6a',letterSpacing:2,marginBottom:6}}>SPOKES</div>
-                <div style={{display:'flex',gap:4}}>
-                  {[28,32,36].map(n => (
-                    <button key={n} onClick={()=>setNSpokes(n)} style={{
-                      background: nSpokes===n ? '#1e3a8a' : '#0a1620',
-                      border: `1px solid ${nSpokes===n?'#3b82f6':BDR}`,
-                      color: nSpokes===n ? '#60a5fa' : '#2d4a6a',
-                      cursor:'pointer',padding:'4px 10px',fontFamily:'monospace',fontSize:9,borderRadius:2,
-                    }}>{n}H</button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Custom toggle */}
-              <div>
-                <div style={{fontSize:8,color:'#2d4a6a',letterSpacing:2,marginBottom:6}}>MODE</div>
-                <div style={{display:'flex',gap:4}}>
-                  {[['preset','PRESET'],['custom','CUSTOM']].map(([k,l]) => (
-                    <button key={k} onClick={()=>setCustom(k==='custom')} style={{
-                      background: (custom?(k==='custom'):(k==='preset')) ? '#1e3a8a' : '#0a1620',
-                      border: `1px solid ${(custom?(k==='custom'):(k==='preset'))?'#3b82f6':BDR}`,
-                      color: (custom?(k==='custom'):(k==='preset')) ? '#60a5fa' : '#2d4a6a',
-                      cursor:'pointer',padding:'4px 10px',fontFamily:'monospace',fontSize:9,borderRadius:2,
-                    }}>{l}</button>
-                  ))}
-                </div>
-              </div>
-
-              {/* DS tension */}
-              <div style={{gridColumn:'span 1'}}>
-                <Slider label="DS Tension" value={tDS} min={60} max={130} step={1} unit=" kgf" color="#fbbf24" onChange={setTDS}/>
-              </div>
-
-              {/* Preset selector or d_DS */}
-              <div style={{gridColumn:'span 1'}}>
-                {!custom ? (
-                  <>
-                    <div style={{fontSize:8,color:'#2d4a6a',letterSpacing:2,marginBottom:6}}>HUB PRESET</div>
-                    <select value={presetId} onChange={e=>setPresetId(e.target.value)} style={{
-                      background:'#0a1620',border:`1px solid ${BDR}`,color:'#60a5fa',
-                      fontFamily:'monospace',fontSize:9,padding:'5px 8px',width:'100%',cursor:'pointer',
-                    }}>
-                      {PRESETS.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
-                    </select>
-                  </>
-                ) : (
-                  <Slider label="d_DS (mm)" value={dDS} min={5} max={65} color="#fbbf24" onChange={setDDS}/>
-                )}
-              </div>
-
-              {/* d_NDS */}
-              {custom && (
-                <div style={{gridColumn:'span 1'}}>
-                  <Slider label="d_NDS (mm)" value={dNDS} min={5} max={65} color="#60a5fa" onChange={setDNDS}/>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* TABS */}
-          <div style={{display:'flex',borderBottom:`1px solid ${BDR}`,background:'#080f1a'}}>
-            {tabBtn('geo',      '01  GEOMETRY')}
-            {tabBtn('tension',  '02  TENSION')}
-            {tabBtn('strength', '03  STRENGTH')}
-            {tabBtn('table',    '04  DATA')}
-          </div>
-
-          <div style={{maxWidth:1280,margin:'0 auto',padding:'20px 24px 48px'}}>
-
-            {/* ── TAB 1: GEOMETRY ───────────────────────────────────────────── */}
-            {tab==='geo' && (
-              <div>
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:20}}>
-
-                  {/* LIVE cross-section */}
-                  <div style={{background:CARD,border:`1px solid ${BDR}`,borderRadius:3,padding:16}}>
-                    <div style={{fontSize:9,color:'#3b82f6',letterSpacing:2,marginBottom:8}}>ACTIVE HUB</div>
-                    <div style={{fontFamily:'monospace',fontSize:11,color:'#5a80a0',marginBottom:12}}>{hubParams.name}</div>
-                    <CrossSection d_ds={hubParams.d_ds} d_nds={hubParams.d_nds}
-                      pcd_ds={hubParams.pcd_ds} pcd_nds={hubParams.pcd_nds}
-                      OLD={hubParams.OLD} type={hubParams.type} width={380}/>
-                    <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginTop:14}}>
-                      <MetricCard label="NDS/DS RATIO" value={m.ratio_pct} unit="%" color={rc}/>
-                      <MetricCard label="FLANGE SPAN" value={m.ftf} unit="mm" color="#38bdf8"/>
-                      <MetricCard label="NDS TENSION" value={m.t_nds} unit="kgf" color="#a78bfa"/>
-                    </div>
-                  </div>
-
-                  {/* Legend */}
-                  <div style={{display:'flex',flexDirection:'column',gap:12}}>
-                    <div style={{background:CARD,border:`1px solid ${BDR}`,borderRadius:3,padding:14}}>
-                      <div style={{fontSize:9,color:GRN,letterSpacing:2,marginBottom:8}}>HOW TO READ</div>
-                      <div style={{fontSize:10,color:'#2d4a6a',lineHeight:1.8}}>
-                        <div><strong>Blue</strong> = NDS/Left flange</div>
-                        <div><strong>Amber</strong> = DS/Right flange</div>
-                        <div style={{marginTop:8,fontSize:9,opacity:0.8}}>Wider hub = better lateral stiffness</div>
-                      </div>
-                    </div>
-                    <div style={{background:CARD,border:`1px solid ${BDR}`,borderRadius:3,padding:14}}>
-                      <div style={{fontSize:9,color:'#2d4a6a',letterSpacing:2,marginBottom:8}}>WHEEL PARAMETERS</div>
-                      <div style={{fontSize:10,color:'#2d4a6a',lineHeight:1.8}}>
-                        <div>Wheel: <span style={{color:'#60a5fa'}}>{WHEEL_SIZES[wheelKey].label}</span></div>
-                        <div>Spokes: <span style={{color:'#60a5fa'}}>{nSpokes} × 3-cross</span></div>
-                        <div>DS: <span style={{color:'#fbbf24'}}>{tDS} kgf</span></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* All preset cross-sections */}
-                <div style={{fontSize:8,color:'#2d4a6a',letterSpacing:2,marginBottom:8}}>ALL PRESETS — REAR HUBS</div>
-                <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(180px, 1fr))',gap:8,marginBottom:20}}>
-                  {PRESETS.filter(p=>p.type==='rear').map(p => {
-                    const pm = allM.find(x=>x.id===p.id);
-                    const prc = rCol(pm.ratio_pct,p.type);
-                    return (
-                      <div key={p.id} onClick={()=>{setPresetId(p.id);setCustom(false);}}
-                        style={{background:CARD,border:`1px solid ${presetId===p.id&&!custom?'#3b82f6':BDR}`,borderRadius:3,padding:'8px 4px',cursor:'pointer'}}>
-                        <div style={{fontFamily:'monospace',fontSize:8,color:presetId===p.id&&!custom?'#60a5fa':'#3d5a80',textAlign:'center',marginBottom:3,textTransform:'uppercase'}}>{p.short}</div>
-                        <CrossSection {...p} width={200} compact/>
-                        <div style={{padding:'3px 8px',display:'flex',justifyContent:'space-between'}}>
-                          <span style={{fontSize:8,color:'#2d4a6a'}}>Ratio</span>
-                          <span style={{fontSize:9,color:prc,fontWeight:'bold'}}>{pm.ratio_pct}%</span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <div style={{fontSize:8,color:'#2d4a6a',letterSpacing:2,marginBottom:8}}>FRONT HUBS</div>
-                <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(180px, 1fr))',gap:8}}>
-                  {PRESETS.filter(p=>p.type==='front').map(p => {
-                    const pm = allM.find(x=>x.id===p.id);
-                    const prc = rCol(pm.ratio_pct,p.type);
-                    return (
-                      <div key={p.id} onClick={()=>{setPresetId(p.id);setCustom(false);}}
-                        style={{background:CARD,border:`1px solid ${presetId===p.id&&!custom?'#3b82f6':BDR}`,borderRadius:3,padding:'8px 4px',cursor:'pointer'}}>
-                        <div style={{fontFamily:'monospace',fontSize:8,color:presetId===p.id&&!custom?'#60a5fa':'#3d5a80',textAlign:'center',marginBottom:3,textTransform:'uppercase'}}>{p.short}</div>
-                        <CrossSection {...p} width={200} compact/>
-                        <div style={{padding:'3px 8px',display:'flex',justifyContent:'space-between'}}>
-                          <span style={{fontSize:8,color:'#2d4a6a'}}>Ratio</span>
-                          <span style={{fontSize:9,color:prc,fontWeight:'bold'}}>{pm.ratio_pct}%</span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* ── TAB 2: TENSION ────────────────────────────────────────────── */}
-            {tab==='tension' && (
-              <div>
-                <div style={{marginBottom:16}}>
-                  <div style={{fontSize:16,color:'#e2e8f0',letterSpacing:2,fontWeight:300}}>SPOKE TENSION SYMMETRY</div>
-                  <div style={{fontSize:9,color:'#2d4a6a',marginTop:2}}>NDS/DS ratio for rear · Target ≥80%</div>
-                </div>
-
-                <div style={{background:CARD,border:`1px solid ${BDR}`,padding:'16px 20px',borderRadius:3,marginBottom:16}}>
-                  {chartData.map(h => {
-                    const rc2 = rCol(h.ratio_pct,h.type);
-                    const isAct = h.isActive;
-                    return (
-                      <div key={h.id} style={{marginBottom:12,opacity:isAct?1:0.65}}>
-                        <div style={{display:'flex',justifyContent:'space-between',marginBottom:3}}>
-                          <span style={{fontSize:10,color:isAct?'#94a3b8':'#4a6a8a',width:210,flexShrink:0,fontWeight:isAct?'bold':'normal'}}>
-                            {isAct?'▶ ':''}{h.short || h.name}
-                          </span>
-                          <span style={{fontSize:11,color:rc2,fontWeight:'bold',width:50,textAlign:'right'}}>{h.ratio_pct}%</span>
-                        </div>
-                        <div style={{background:'#060d18',height:isAct?14:10,borderRadius:1,position:'relative',border:`1px solid ${isAct?'#1e3a8a':BDR}`}}>
-                          <div style={{position:'absolute',left:0,top:0,bottom:0,width:`${Math.min(h.ratio_pct,100)}%`,background:rc2,borderRadius:1,opacity:0.85,transition:'width 0.3s'}}/>
-                          <div style={{position:'absolute',left:'80%',top:0,bottom:0,width:1,background:'#1e3050'}}/>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* ── TAB 3: STRENGTH ───────────────────────────────────────────── */}
-            {tab==='strength' && (
-              <div>
-                <div style={{marginBottom:16}}>
-                  <div style={{fontSize:16,color:'#e2e8f0',letterSpacing:2,fontWeight:300}}>WHEEL STRENGTH</div>
-                  <div style={{fontSize:9,color:'#2d4a6a',marginTop:2}}>Mode Matrix · Static rear load ~35–40 kgf</div>
-                </div>
-
-                <div style={{background:CARD,border:`1px solid ${BDR}`,padding:'14px 18px',borderRadius:3,marginBottom:16}}>
-                  <div style={{fontSize:9,color:GRN,letterSpacing:2,marginBottom:10}}>ACTIVE HUB: {hubParams.name}</div>
-                  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10}}>
-                    <MetricCard label="LATERAL STRENGTH" value={m.F_lat_kgf} unit="kgf" color="#f59e0b"/>
-                    <MetricCard label="RADIAL STRENGTH"  value={m.F_rad_kgf} unit="kgf" color="#a78bfa"/>
-                    <MetricCard label="LATERAL STIFFNESS" value={m.K_lat}    unit="N/mm" color="#38bdf8"/>
-                    <MetricCard label="RADIAL STIFFNESS"  value={m.K_rad}    unit="N/mm" color="#4ade80"/>
-                  </div>
-                </div>
-
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
-                  <div style={{background:CARD,border:`1px solid ${BDR}`,padding:'12px 16px',borderRadius:3}}>
-                    <div style={{fontSize:9,color:'#f59e0b',letterSpacing:1.5,marginBottom:6}}>ABOUT STRENGTH</div>
-                    <p style={{fontSize:10,color:'#2d4a6a',margin:0,lineHeight:1.8}}>
-                      Wheel strength scales with NDS tension. Wider hubs push flanges further from centre,
-                      increasing bracing angles. Current hub has β_DS = {m.beta_ds}° and β_NDS = {m.beta_nds}°.
-                    </p>
-                  </div>
-                  <div style={{background:CARD,border:`1px solid ${BDR}`,padding:'12px 16px',borderRadius:3}}>
-                    <div style={{fontSize:9,color:'#a78bfa',letterSpacing:1.5,marginBottom:6}}>KEY INSIGHTS</div>
-                    <p style={{fontSize:10,color:'#2d4a6a',margin:0,lineHeight:1.8}}>
-                      Wider axle width improves strength. DS tension slider affects all results linearly.
-                      At 120 kgf, multiply strength values by 1.2.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* ── TAB 4: DATA TABLE ─────────────────────────────────────────── */}
-            {tab==='table' && (
-              <div>
-                <div style={{marginBottom:16}}>
-                  <div style={{fontSize:16,color:'#e2e8f0',letterSpacing:2,fontWeight:300}}>DATA TABLE</div>
-                  <div style={{fontSize:9,color:'#2d4a6a',marginTop:2}}>
-                    All values live · {WHEEL_SIZES[wheelKey].label} · {nSpokes}H · DS: {tDS} kgf
-                  </div>
-                </div>
-
-                <div style={{overflowX:'auto',marginBottom:20}}>
-                  <table style={{width:'100%',borderCollapse:'collapse',fontSize:9}}>
-                    <thead>
-                      <tr style={{borderBottom:`1px solid ${BDR}`}}>
-                        {['Hub','Type','d_DS','d_NDS','Ratio %','F_lat','F_rad','K_lat','K_rad'].map(h=>(
-                          <th key={h} style={{padding:'8px 10px',textAlign:'left',color:'#1e3050',fontSize:8,fontWeight:'normal',letterSpacing:1,whiteSpace:'nowrap'}}>{h}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {chartData.map((h,i)=>{
-                        const rc2=rCol(h.ratio_pct,h.type);
-                        return(
-                          <tr key={h.id} style={{background:h.isActive?'#0d1e33':i%2===0?BG:'#0a1422',borderBottom:`1px solid #0d1826`}}>
-                            <td style={{padding:'7px 10px',color:h.isActive?'#94a3b8':'#3d5a80',fontWeight:h.isActive?'bold':'normal'}}>{h.short}</td>
-                            <td style={{padding:'7px 10px',color:h.type==='rear'?'#f59e0b':'#3b82f6',fontSize:8,textTransform:'uppercase'}}>{h.type}</td>
-                            <td style={{padding:'7px 10px',color:'#fbbf24'}}>{h.d_ds}</td>
-                            <td style={{padding:'7px 10px',color:'#60a5fa'}}>{h.d_nds}</td>
-                            <td style={{padding:'7px 10px',color:rc2,fontWeight:'bold'}}>{h.ratio_pct}%</td>
-                            <td style={{padding:'7px 10px',color:'#f59e0b'}}>{h.F_lat_kgf}</td>
-                            <td style={{padding:'7px 10px',color:'#a78bfa'}}>{h.F_rad_kgf}</td>
-                            <td style={{padding:'7px 10px',color:'#38bdf8'}}>{h.K_lat}</td>
-                            <td style={{padding:'7px 10px',color:'#4ade80'}}>{h.K_rad}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-
-            <div style={{marginTop:40,borderTop:`1px solid #0d1826`,paddingTop:12,fontSize:8,color:'#1e3050',lineHeight:2}}>
-              Ford (2018) Reinventing the Wheel · Mode Matrix Model
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<HubAnalysis />);
-  </script>
+buildMiniGrid();
+initCharts();
+refresh();
+</script>
 </body>
 </html>
