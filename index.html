@@ -10,68 +10,68 @@
   --bg:#f9fafb;--card:#fff;--card2:#f3f4f6;--txt:#111827;--txt2:#6b7280;--txt3:#9ca3af;
   --bdr:rgba(0,0,0,.10);--bdr2:rgba(0,0,0,.18);--info-bg:#eff6ff;--info:#2563eb;
   --ds:#d97706;--nds:#2563eb;--good:#059669;--warn:#d97706;--bad:#dc2626;
-  --frad:#7c3aed;--flat:#d97706;--klat:#0d9488;--r:8px;--rl:12px
+  --frad:#7c3aed;--flat:#d97706;--klat:#0d9488;--r:6px;--rl:9px
 }
 @media(prefers-color-scheme:dark){:root{
   --bg:#0f172a;--card:#1e293b;--card2:#1a2640;--txt:#f1f5f9;--txt2:#94a3b8;--txt3:#64748b;
   --bdr:rgba(255,255,255,.10);--bdr2:rgba(255,255,255,.18);--info-bg:#1e3a5f;--info:#60a5fa;
   --ds:#fbbf24;--nds:#60a5fa
 }}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:14px;line-height:1.6;color:var(--txt);background:var(--bg);padding:16px}
-h1{font-size:20px;font-weight:500;color:var(--txt);margin-bottom:2px}
-p.sub{font-size:12px;color:var(--txt2)}
-.card{background:var(--card);border:0.5px solid var(--bdr);border-radius:var(--rl);padding:14px 16px}
-.card2{background:var(--card2);border-radius:var(--r);padding:10px 14px}
-button{cursor:pointer;font-family:inherit;font-size:13px;padding:5px 12px;border:0.5px solid var(--bdr2);border-radius:var(--r);background:var(--card2);color:var(--txt);transition:background .15s}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:11px;line-height:1.5;color:var(--txt);background:var(--bg);padding:12px}
+h1{font-size:15px;font-weight:500;color:var(--txt);margin-bottom:1px}
+p.sub{font-size:10px;color:var(--txt2)}
+.card{background:var(--card);border:0.5px solid var(--bdr);border-radius:var(--rl);padding:10px 12px}
+.card2{background:var(--card2);border-radius:var(--r);padding:7px 10px}
+button{cursor:pointer;font-family:inherit;font-size:10px;padding:3px 9px;border:0.5px solid var(--bdr2);border-radius:var(--r);background:var(--card2);color:var(--txt);transition:background .15s}
 button:hover{background:var(--card)}
 button.on{background:var(--info-bg);color:var(--info);border-color:var(--info)}
-.btn-row{display:flex;gap:6px;flex-wrap:wrap}
-label.lbl{font-size:12px;color:var(--txt2);display:block;margin-bottom:5px}
+.btn-row{display:flex;gap:4px;flex-wrap:wrap}
+label.lbl{font-size:10px;color:var(--txt2);display:block;margin-bottom:3px}
 input[type=range]{width:100%;accent-color:var(--info)}
-.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
-.mcard{background:var(--card2);border-radius:var(--r);padding:10px 12px;text-align:center}
-.mcard .ml{font-size:11px;color:var(--txt2);margin-bottom:3px}
-.mcard .mv{font-size:21px;font-weight:500;line-height:1.1}
-.mcard .ms{font-size:11px;color:var(--txt3);margin-top:3px}
-.tab-nav{display:flex;border-bottom:0.5px solid var(--bdr);margin:14px 0 0;overflow-x:auto}
-.tab-btn{background:none;border:none;border-bottom:2px solid transparent;padding:9px 16px;font-size:13px;color:var(--txt2);cursor:pointer;white-space:nowrap;border-radius:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(95px,1fr));gap:6px}
+.mcard{background:var(--card2);border-radius:var(--r);padding:7px 9px;text-align:center}
+.mcard .ml{font-size:9px;color:var(--txt2);margin-bottom:2px}
+.mcard .mv{font-size:16px;font-weight:500;line-height:1.1}
+.mcard .ms{font-size:9px;color:var(--txt3);margin-top:2px}
+.tab-nav{display:flex;border-bottom:0.5px solid var(--bdr);margin:10px 0 0;overflow-x:auto}
+.tab-btn{background:none;border:none;border-bottom:2px solid transparent;padding:7px 12px;font-size:10px;color:var(--txt2);cursor:pointer;white-space:nowrap;border-radius:0}
 .tab-btn.on{border-bottom-color:var(--info);color:var(--info);font-weight:500}
-.panel{padding-top:16px}
-.section-lbl{font-size:11px;color:var(--txt3);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px}
-.adj-row{display:flex;align-items:center;gap:6px}
-.adj-btn{width:28px;height:28px;padding:0;display:flex;align-items:center;justify-content:center;font-size:16px;border-radius:var(--r)}
-.adj-val{font-size:15px;font-weight:500;min-width:48px;text-align:center}
-.mini-card{background:var(--card);border:0.5px solid var(--bdr);border-radius:var(--r);padding:8px 10px;cursor:pointer;transition:border-color .15s}
+.panel{padding-top:12px}
+.section-lbl{font-size:9px;color:var(--txt3);letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px}
+.adj-row{display:flex;align-items:center;gap:4px}
+.adj-btn{width:22px;height:22px;padding:0;display:flex;align-items:center;justify-content:center;font-size:13px;border-radius:var(--r)}
+.adj-val{font-size:12px;font-weight:500;min-width:40px;text-align:center}
+.mini-card{background:var(--card);border:0.5px solid var(--bdr);border-radius:var(--r);padding:6px 8px;cursor:pointer;transition:border-color .15s}
 .mini-card:hover{border-color:var(--bdr2)}
 .mini-card.on{border-color:var(--info);background:var(--info-bg)}
-.mini-name{font-size:11px;color:var(--txt2);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mini-r0{font-size:13px;font-weight:500}
-.mini-r3{font-size:11px;color:var(--txt2)}
-.note{font-size:12px;color:var(--txt2);line-height:1.7;margin-top:12px}
+.mini-name{font-size:9px;color:var(--txt2);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-r0{font-size:10px;font-weight:500}
+.mini-r3{font-size:9px;color:var(--txt2)}
+.note{font-size:10px;color:var(--txt2);line-height:1.6;margin-top:8px}
 .note strong{font-weight:500;color:var(--txt)}
-table{width:100%;border-collapse:collapse;font-size:12px}
-th{text-align:left;padding:7px 8px;font-weight:500;font-size:11px;color:var(--txt2);border-bottom:1px solid var(--bdr2)}
-td{padding:6px 8px;border-bottom:0.5px solid var(--bdr)}
+table{width:100%;border-collapse:collapse;font-size:10px}
+th{text-align:left;padding:5px 6px;font-weight:500;font-size:9px;color:var(--txt2);border-bottom:1px solid var(--bdr2)}
+td{padding:4px 6px;border-bottom:0.5px solid var(--bdr)}
 tr.hi{background:var(--info-bg)}
-.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--txt2);margin-bottom:10px}
-.lg-dot{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle}
-@media(max-width:600px){.grid2{grid-template-columns:1fr}.grid3{grid-template-columns:1fr 1fr}}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:10px;color:var(--txt2);margin-bottom:7px}
+.lg-dot{width:8px;height:8px;border-radius:2px;display:inline-block;margin-right:3px;vertical-align:middle}
+@media(max-width:500px){.grid2{grid-template-columns:1fr}.grid3{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 
-<div style="max-width:1100px;margin:0 auto">
+<div style="max-width:825px;margin:0 auto">
 
-<header style="margin-bottom:14px">
+<header style="margin-bottom:10px">
   <h1>MTB wheel engineering calculator</h1>
   <p class="sub">Rear hub comparison · Mode Matrix method (Ford 2018 / bike-wheel-calc) · DT Swiss TK540 rim · 32 × 3-cross · 2.0 mm steel spokes</p>
 </header>
 
 <!-- CONTROLS -->
-<div class="card" style="margin-bottom:12px">
-  <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end;margin-bottom:12px">
+<div class="card" style="margin-bottom:9px">
+  <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;margin-bottom:9px">
 
     <div>
       <div class="lbl">Wheel size</div>
@@ -99,10 +99,10 @@ tr.hi{background:var(--info-bg)}
       </div>
     </div>
 
-    <div style="flex:1;min-width:180px;max-width:240px">
+    <div style="flex:1;min-width:135px;max-width:180px">
       <div style="display:flex;justify-content:space-between">
         <span class="lbl">DS reference tension</span>
-        <strong id="tv" style="font-size:12px;color:var(--txt)">100 kgf</strong>
+        <strong id="tv" style="font-size:10px;color:var(--txt)">100 kgf</strong>
       </div>
       <input type="range" id="tslider" min="60" max="130" step="1" value="100"
         oninput="ST.tDS=+this.value;document.getElementById('tv').textContent=this.value+' kgf';refresh()">
@@ -111,7 +111,7 @@ tr.hi{background:var(--info-bg)}
   </div>
 
   <div class="lbl">Hub preset <span style="font-weight:400;color:var(--txt3)">— click to select</span></div>
-  <div class="btn-row" style="margin-bottom:10px" id="preset-btns">
+  <div class="btn-row" style="margin-bottom:7px" id="preset-btns">
     <button data-id="r142"  onclick="selHub(this)">ISO 135/142</button>
     <button class="on" data-id="r148"  onclick="selHub(this)">Boost 148×12</button>
     <button data-id="r157a" onclick="selHub(this)">Superboost 157</button>
@@ -119,7 +119,7 @@ tr.hi{background:var(--info-bg)}
     <button data-id="custom" onclick="selHub(this)">Custom ✎</button>
   </div>
 
-  <div id="custom-row" style="display:none;gap:20px;flex-wrap:wrap;padding-top:10px;border-top:0.5px solid var(--bdr)">
+  <div id="custom-row" style="display:none;gap:14px;flex-wrap:wrap;padding-top:8px;border-top:0.5px solid var(--bdr)">
     <div>
       <div class="lbl">DS center-to-flange (mm)</div>
       <div class="adj-row">
@@ -165,10 +165,10 @@ tr.hi{background:var(--info-bg)}
 
 <!-- TAB: GEOMETRY -->
 <div id="tab-geo" class="panel">
-  <div class="grid2" style="margin-bottom:16px">
+  <div class="grid2" style="margin-bottom:12px">
     <div class="card">
       <div class="section-lbl" id="xs-title">Boost 148×12 — cross-section</div>
-      <svg id="xsec" viewBox="0 0 400 160" style="width:100%;height:auto;display:block;margin-top:8px">
+      <svg id="xsec" viewBox="0 0 400 160" style="width:100%;height:auto;display:block;margin-top:6px">
         <line id="xs-sk-nds" x1="165" y1="57" x2="200" y2="12" stroke="#2563eb" stroke-width="1" opacity=".25"/>
         <line id="xs-sk-ds"  x1="248" y1="57" x2="200" y2="12" stroke="#d97706" stroke-width="1" opacity=".25"/>
         <circle cx="200" cy="12" r="3.5" fill="none" stroke="#9ca3af" stroke-width="1"/>
@@ -196,56 +196,28 @@ tr.hi{background:var(--info-bg)}
         <text id="xs-ftf"    x="200" y="140" text-anchor="middle" font-size="9" fill="#9ca3af" font-family="system-ui,sans-serif">flange-to-flange: 60.3 mm</text>
         <text id="xs-info"   x="200" y="154" text-anchor="middle" font-size="9" fill="#9ca3af" font-family="system-ui,sans-serif">ERD 600 mm · 32H · 3×</text>
       </svg>
-      <div style="display:flex;gap:16px;font-size:11px;color:var(--txt2);margin-top:6px">
-        <span><span style="width:9px;height:9px;background:#2563eb;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle"></span>NDS flange</span>
-        <span><span style="width:9px;height:9px;background:#d97706;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle"></span>DS flange</span>
-        <span style="color:var(--txt3)">Faint lines = spoke paths to rim</span>
+      <div style="display:flex;gap:10px;font-size:9px;color:var(--txt2);margin-top:4px">
+        <span><span style="width:7px;height:7px;background:#2563eb;border-radius:2px;display:inline-block;margin-right:3px;vertical-align:middle"></span>NDS</span>
+        <span><span style="width:7px;height:7px;background:#d97706;border-radius:2px;display:inline-block;margin-right:3px;vertical-align:middle"></span>DS</span>
+        <span style="color:var(--txt3)">Faint lines = spoke paths</span>
       </div>
     </div>
 
-    <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;flex-direction:column;gap:7px">
       <div class="grid2">
-        <div class="mcard">
-          <div class="ml">NDS/DS tension ratio</div>
-          <div class="mv" id="m-ratio">—</div>
-          <div class="ms">target ≥ 80%</div>
-        </div>
-        <div class="mcard">
-          <div class="ml">NDS tension</div>
-          <div class="mv" id="m-tnds">—</div>
-          <div class="ms" id="m-tnds-s">at 100 kgf DS ref</div>
-        </div>
+        <div class="mcard"><div class="ml">NDS/DS tension ratio</div><div class="mv" id="m-ratio">—</div><div class="ms">target ≥ 80%</div></div>
+        <div class="mcard"><div class="ml">NDS tension</div><div class="mv" id="m-tnds">—</div><div class="ms" id="m-tnds-s">at 100 kgf DS ref</div></div>
       </div>
       <div class="grid2">
-        <div class="mcard">
-          <div class="ml">β DS bracing angle</div>
-          <div class="mv" id="m-bds" style="font-size:17px">—</div>
-          <div class="ms" id="m-lds">spoke — mm</div>
-        </div>
-        <div class="mcard">
-          <div class="ml">β NDS bracing angle</div>
-          <div class="mv" id="m-bnds" style="font-size:17px">—</div>
-          <div class="ms" id="m-lnds">spoke — mm</div>
-        </div>
+        <div class="mcard"><div class="ml">β DS bracing angle</div><div class="mv" id="m-bds" style="font-size:13px">—</div><div class="ms" id="m-lds">spoke — mm</div></div>
+        <div class="mcard"><div class="ml">β NDS bracing angle</div><div class="mv" id="m-bnds" style="font-size:13px">—</div><div class="ms" id="m-lnds">spoke — mm</div></div>
       </div>
       <div class="grid3">
-        <div class="mcard">
-          <div class="ml">K_lat</div>
-          <div class="mv" id="m-kl" style="font-size:17px">—</div>
-          <div class="ms">N/mm</div>
-        </div>
-        <div class="mcard">
-          <div class="ml">F_lat</div>
-          <div class="mv" id="m-fl" style="font-size:17px">—</div>
-          <div class="ms">kgf</div>
-        </div>
-        <div class="mcard">
-          <div class="ml">F_rad ★</div>
-          <div class="mv" id="m-fr" style="font-size:17px">—</div>
-          <div class="ms">kgf</div>
-        </div>
+        <div class="mcard"><div class="ml">K_lat</div><div class="mv" id="m-kl" style="font-size:13px">—</div><div class="ms">N/mm</div></div>
+        <div class="mcard"><div class="ml">F_lat</div><div class="mv" id="m-fl" style="font-size:13px">—</div><div class="ms">kgf</div></div>
+        <div class="mcard"><div class="ml">F_rad ★</div><div class="mv" id="m-fr" style="font-size:13px">—</div><div class="ms">kgf</div></div>
       </div>
-      <p class="note">★ F_rad: min. radial force for bottom spoke to reach 0 kgf (Ford primary strength metric). 3 mm offset: <strong>d_DS + 3, d_NDS − 3</strong> — same hub, adjusted effective geometry. Rim shear-centre radius scales with wheel size: R = ERD/2 + 11 mm.</p>
+      <p class="note" style="font-size:9px">★ F_rad: min. radial force for bottom spoke to reach 0 kgf (Ford primary strength metric). 3 mm offset: <strong>d_DS + 3, d_NDS − 3</strong> — same hub, adjusted effective geometry. Rim shear-centre radius scales with wheel size.</p>
     </div>
   </div>
 
@@ -256,46 +228,46 @@ tr.hi{background:var(--info-bg)}
 <!-- TAB: TENSION -->
 <div id="tab-tension" class="panel" hidden>
   <div class="legend">
-    <span><span class="lg-dot" style="background:#378ADD"></span>0 mm rim (standard)</span>
-    <span><span class="lg-dot" style="background:#1D9E75"></span>3 mm DS-offset rim</span>
+    <span><span class="lg-dot" style="background:#378ADD"></span>0 mm (standard)</span>
+    <span><span class="lg-dot" style="background:#1D9E75"></span>3 mm DS-offset</span>
     <span style="color:var(--txt3)">Vertical line = 80% target</span>
   </div>
-  <div style="position:relative;height:280px">
-    <canvas id="tc" role="img" aria-label="Horizontal grouped bar chart: NDS/DS tension ratio at 0mm and 3mm offset">NDS/DS tension ratios at 0mm and 3mm offset.</canvas>
+  <div style="position:relative;height:210px">
+    <canvas id="tc" role="img" aria-label="Tension ratio comparison">NDS/DS tension ratios.</canvas>
   </div>
-  <div class="grid2" style="margin-top:14px">
+  <div class="grid2" style="margin-top:10px">
     <div class="card2">
-      <p style="font-size:13px;font-weight:500;margin-bottom:5px">Why tension balance matters</p>
-      <p class="note">Wheel strength scales with NDS tension, not DS. The NDS bottom spoke buckles first. Equilibrium: <em>T_DS × sin β_DS = T_NDS × sin β_NDS</em>. The 3 mm offset increases the effective DS bracing angle and decreases the NDS angle, improving the ratio by ~14–15 percentage points.</p>
+      <p style="font-size:10px;font-weight:500;margin-bottom:3px">Why tension balance matters</p>
+      <p class="note" style="font-size:9px;margin-top:0">Wheel strength scales with NDS tension. The NDS bottom spoke buckles first. Equilibrium: <em>T_DS × sin β_DS = T_NDS × sin β_NDS</em>. The 3 mm offset improves the ratio by ~14–15 pp.</p>
     </div>
     <div class="card2">
-      <p style="font-size:13px;font-weight:500;margin-bottom:5px">Offset rim approximation</p>
-      <p class="note">Because we use Ford's TK540 rim model (which does not natively support offset), the 3 mm offset is applied as an adjustment to effective hub flange distances: <strong>d_DS_eff = d_DS + 3 mm, d_NDS_eff = d_NDS − 3 mm</strong>. In a real build, spoke lengths would be recalculated accordingly.</p>
+      <p style="font-size:10px;font-weight:500;margin-bottom:3px">Offset rim approximation</p>
+      <p class="note" style="font-size:9px;margin-top:0">Uses Ford's TK540 rim model. The 3 mm offset is applied as: <strong>d_DS_eff = d_DS + 3 mm, d_NDS_eff = d_NDS − 3 mm</strong>. In a real build, spoke lengths would be recalculated.</p>
     </div>
   </div>
 </div>
 
 <!-- TAB: STRENGTH -->
 <div id="tab-strength" class="panel" hidden>
-  <div class="grid2" style="margin-bottom:12px">
+  <div class="grid2" style="margin-bottom:9px">
     <div>
-      <div class="section-lbl">F_rad — radial strength (kgf) · Ford primary metric</div>
+      <div class="section-lbl">F_rad — radial strength (kgf) · Ford primary</div>
       <div class="legend">
         <span><span class="lg-dot" style="background:#7c3aed"></span>0 mm</span>
-        <span><span class="lg-dot" style="background:#a78bfa"></span>3 mm offset</span>
+        <span><span class="lg-dot" style="background:#a78bfa"></span>3 mm</span>
       </div>
-      <div style="position:relative;height:220px">
-        <canvas id="frc" role="img" aria-label="Grouped bar chart: radial strength at 0mm and 3mm offset">Radial strength comparison.</canvas>
+      <div style="position:relative;height:165px">
+        <canvas id="frc" role="img" aria-label="Radial strength">Radial strength.</canvas>
       </div>
     </div>
     <div>
       <div class="section-lbl">F_lat — lateral strength (kgf)</div>
       <div class="legend">
         <span><span class="lg-dot" style="background:#d97706"></span>0 mm</span>
-        <span><span class="lg-dot" style="background:#fbbf24"></span>3 mm offset</span>
+        <span><span class="lg-dot" style="background:#fbbf24"></span>3 mm</span>
       </div>
-      <div style="position:relative;height:220px">
-        <canvas id="flc" role="img" aria-label="Grouped bar chart: lateral strength at 0mm and 3mm offset">Lateral strength comparison.</canvas>
+      <div style="position:relative;height:165px">
+        <canvas id="flc" role="img" aria-label="Lateral strength">Lateral strength.</canvas>
       </div>
     </div>
   </div>
@@ -303,44 +275,40 @@ tr.hi{background:var(--info-bg)}
     <div class="section-lbl">K_lat — lateral stiffness (N/mm)</div>
     <div class="legend">
       <span><span class="lg-dot" style="background:#0d9488"></span>0 mm</span>
-      <span><span class="lg-dot" style="background:#5eead4"></span>3 mm offset</span>
+      <span><span class="lg-dot" style="background:#5eead4"></span>3 mm</span>
     </div>
-    <div style="position:relative;height:130px">
-      <canvas id="klc" role="img" aria-label="Grouped bar chart: lateral stiffness at 0mm and 3mm offset">Lateral stiffness comparison.</canvas>
+    <div style="position:relative;height:98px">
+      <canvas id="klc" role="img" aria-label="Lateral stiffness">Lateral stiffness.</canvas>
     </div>
   </div>
-  <p class="note" style="margin-top:10px">Dashed reference line ≈ 38 kgf (estimated static rear load, 75 kg rider). Strength ordering: 26&quot; &gt; 27.5&quot; &gt; 29&quot; for all metrics — smaller wheels have shorter, stiffer spokes and a stiffer rim (R³ effect). K_lat changes only ±2–3 N/mm between 0 mm and 3 mm offset.</p>
+  <p class="note" style="font-size:9px;margin-top:7px">Dashed line ≈ 38 kgf (static rear load, 75 kg rider). Strength ordering: 26&quot; &gt; 27.5&quot; &gt; 29&quot;. K_lat changes only ±2–3 N/mm between 0 mm and 3 mm offset.</p>
 </div>
 
 <!-- TAB: DATA -->
 <div id="tab-data" class="panel" hidden>
-  <p class="note" id="data-sub" style="margin-bottom:10px">Computed at current settings</p>
+  <p class="note" id="data-sub" style="margin-bottom:7px;margin-top:0">Computed at current settings</p>
   <div style="overflow-x:auto">
     <table id="dtbl">
-      <thead>
-        <tr>
-          <th>Hub</th><th>OLD mm</th><th>Offset</th>
-          <th>d_DS mm</th><th>d_NDS mm</th><th>F–F mm</th>
-          <th>NDS/DS %</th><th>β_DS °</th><th>β_NDS °</th>
-          <th>K_lat N/mm</th><th>F_lat kgf</th><th>F_rad kgf</th>
-        </tr>
-      </thead>
+      <thead><tr>
+        <th>Hub</th><th>OLD</th><th>Offset</th><th>d_DS</th><th>d_NDS</th><th>F–F</th>
+        <th>NDS/DS %</th><th>β_DS°</th><th>β_NDS°</th><th>K_lat</th><th>F_lat</th><th>F_rad</th>
+      </tr></thead>
       <tbody id="dtbody"></tbody>
     </table>
   </div>
-  <p class="note" style="margin-top:10px">
-    <strong>F–F mm</strong> = flange-to-flange width (hub property, unchanged by rim offset) ·
-    <strong>β</strong> = lateral bracing angle = arcsin(d / spoke length) ·
-    <strong>K_lat</strong> = lateral stiffness at contact patch (Mode Matrix) ·
-    <strong>F_lat</strong> = min. lateral force for weak-side spoke to reach 0 kgf ·
-    <strong>F_rad ★</strong> = min. radial force for bottom spoke to reach 0 kgf
+  <p class="note" style="font-size:9px;margin-top:7px">
+    <strong>F–F</strong> = flange-to-flange (mm) ·
+    <strong>β</strong> = bracing angle ·
+    <strong>K_lat</strong> = stiffness (N/mm) ·
+    <strong>F_lat</strong> = lateral strength (kgf) ·
+    <strong>F_rad ★</strong> = radial strength (kgf)
   </p>
 </div>
 
-<footer style="margin-top:24px;padding-top:12px;border-top:0.5px solid var(--bdr);font-size:11px;color:var(--txt3)">
-  Ford, M. (2018) Reinventing the Wheel — Northwestern University ·
+<footer style="margin-top:18px;padding-top:9px;border-top:0.5px solid var(--bdr);font-size:9px;color:var(--txt3)">
+  Ford (2018) Reinventing the Wheel — Northwestern ·
   Ford, Papadopoulos &amp; Balogun (2016) Buckling of the Bicycle Wheel ·
-  Hub dimensions: chrisking.com / velodrop.com (2024) ·
+  Hub dims: chrisking.com / velodrop.com ·
   github.com/dashdotrobot/bike-wheel-calc
 </footer>
 </div>
@@ -356,8 +324,6 @@ const HUBS={
   custom:{name:'Custom hub',     short:'Custom',        OLD:null,dds:24.0, dnds:36.3, pds:57.4, pnds:57.4}
 };
 const ORDER=['r142','r148','r157a','r157b','custom'];
-
-// ── State — default 29" wheel ─────────────────────────────────────────────────
 const ST={erd:600, nsp:32, tDS:100, hubId:'r148', offset:0};
 
 function eff(h,off){
@@ -365,14 +331,9 @@ function eff(h,off){
   return{dds:+(h.dds+off).toFixed(1),dnds:+(h.dnds-off).toFixed(1)};
 }
 
-// ── Mode Matrix physics (Ford 2018 / bike-wheel-calc) ─────────────────────────
-// KEY FIX: Rr scales with wheel size — Rr = ERD/2/1000 + 0.011 (metres)
-// With Rr hardcoded to 0.311 m the rim stiffness K_rim ∝ 1/Rr³ is identical
-// for all wheel sizes, which incorrectly shows 29" as strongest.
-// Scaling Rr correctly gives the physically right ordering: 26" > 27.5" > 29".
 function calc(dds,dnds,pds,pnds){
   const EA=210e9*Math.PI*1e-6, EIL=50, EIR=150, GJ=40;
-  const Rr=ST.erd/2/1000+0.011;          // ← scales with wheel size
+  const Rr=ST.erd/2/1000+0.011;
   const coeff=Math.PI/Math.pow(Rr,3);
   const Ns=Math.floor(ST.nsp/2), Re=ST.erd/2/1000;
   const cos_x=Math.cos(4*Math.PI*3/Ns), T=ST.tDS*9.81;
@@ -410,7 +371,6 @@ function rCol(r){
 }
 function fmt(v,d=1){return(+v).toFixed(d);}
 
-// ── SVG cross-section ─────────────────────────────────────────────────────────
 function updateSVG(){
   const h=HUBS[ST.hubId], e=eff(h,ST.offset);
   const SC=1.08, CX=200, AY=86, FH=21;
@@ -448,7 +408,6 @@ function updateSVG(){
   if(ot)ot.textContent=h.name+(ST.offset?' — 3 mm DS-offset':' — standard rim');
 }
 
-// ── Metric cards ──────────────────────────────────────────────────────────────
 function updateMetrics(){
   const h=HUBS[ST.hubId], e=eff(h,ST.offset);
   const m=calc(e.dds,e.dnds,h.pds,h.pnds);
@@ -462,7 +421,6 @@ function updateMetrics(){
   set('m-kl',fmt(m.Kl,1)); set('m-fl',fmt(m.Fl,1)); set('m-fr',fmt(m.Fr,1));
 }
 
-// ── Mini hub grid ─────────────────────────────────────────────────────────────
 function buildMiniGrid(){
   const g=document.getElementById('mini-grid'); if(!g)return; g.innerHTML='';
   ORDER.forEach(id=>{
@@ -481,12 +439,11 @@ function buildMiniGrid(){
     div.innerHTML=`<div class="mini-name">${h.short}</div>
       <div class="mini-r0" style="color:${rc}">${fmt(m0.ratio)}%</div>
       <div class="mini-r3">→ ${fmt(m3.ratio)}% <span style="color:${rCol(m3.ratio)}">+${fmt(m3.ratio-m0.ratio,1)}pp</span></div>
-      <div style="font-size:10px;color:var(--txt3);margin-top:2px">OLD ${h.OLD||'—'}mm</div>`;
+      <div style="font-size:8px;color:var(--txt3);margin-top:1px">OLD ${h.OLD||'—'}mm</div>`;
     g.appendChild(div);
   });
 }
 
-// ── Charts ────────────────────────────────────────────────────────────────────
 let tChart,frChart,flChart,klChart;
 function initCharts(){
   const labels=ORDER.map(id=>HUBS[id].short);
@@ -504,29 +461,29 @@ function initCharts(){
     data:{labels,datasets:[{label:'0 mm',data:d0,backgroundColor:'#378ADD',borderRadius:3},
                            {label:'3 mm offset',data:d3,backgroundColor:'#1D9E75',borderRadius:3}]},
     options:{...base,indexAxis:'y',
-      scales:{x:{min:0,max:110,grid:{color:gC},ticks:{color:tC},
-                 title:{display:true,text:'NDS/DS tension ratio (%)',color:tC,font:{size:11}}},
-              y:{grid:{color:gC},ticks:{color:tC}}},
+      scales:{x:{min:0,max:110,grid:{color:gC},ticks:{color:tC,font:{size:9}},
+                 title:{display:true,text:'NDS/DS tension ratio (%)',color:tC,font:{size:9}}},
+              y:{grid:{color:gC},ticks:{color:tC,font:{size:9}}}},
       plugins:{legend:{display:false},annotation:{annotations:{t80:{type:'line',value:80,
         scaleID:'x',borderColor:'#dc2626',borderWidth:1.5,borderDash:[5,3]}}}}}});
   frChart=new Chart(document.getElementById('frc'),{type:'bar',
     data:{labels,datasets:[{label:'0 mm',data:fr0,backgroundColor:'#7c3aed',borderRadius:3},
                            {label:'3 mm',data:fr3,backgroundColor:'#a78bfa',borderRadius:3}]},
-    options:{...base,scales:{x:{grid:{color:gC},ticks:{color:tC,font:{size:11},maxRotation:30}},
-      y:{grid:{color:gC},ticks:{color:tC},title:{display:true,text:'kgf',color:tC,font:{size:11}}}},
+    options:{...base,scales:{x:{grid:{color:gC},ticks:{color:tC,font:{size:9},maxRotation:30}},
+      y:{grid:{color:gC},ticks:{color:tC,font:{size:9}},title:{display:true,text:'kgf',color:tC,font:{size:9}}}},
       plugins:{legend:{display:false},annotation:{annotations:{r38:{type:'line',value:38,
         scaleID:'y',borderColor:'#dc2626',borderWidth:1.5,borderDash:[5,3]}}}}}});
   flChart=new Chart(document.getElementById('flc'),{type:'bar',
     data:{labels,datasets:[{label:'0 mm',data:fl0,backgroundColor:'#d97706',borderRadius:3},
                            {label:'3 mm',data:fl3,backgroundColor:'#fbbf24',borderRadius:3}]},
-    options:{...base,scales:{x:{grid:{color:gC},ticks:{color:tC,font:{size:11},maxRotation:30}},
-      y:{grid:{color:gC},ticks:{color:tC},title:{display:true,text:'kgf',color:tC,font:{size:11}}}},
+    options:{...base,scales:{x:{grid:{color:gC},ticks:{color:tC,font:{size:9},maxRotation:30}},
+      y:{grid:{color:gC},ticks:{color:tC,font:{size:9}},title:{display:true,text:'kgf',color:tC,font:{size:9}}}},
       plugins:{legend:{display:false}}}});
   klChart=new Chart(document.getElementById('klc'),{type:'bar',
     data:{labels,datasets:[{label:'0 mm',data:kl0,backgroundColor:'#0d9488',borderRadius:3},
                            {label:'3 mm',data:kl3,backgroundColor:'#5eead4',borderRadius:3}]},
-    options:{...base,scales:{x:{grid:{color:gC},ticks:{color:tC,font:{size:11}}},
-      y:{grid:{color:gC},ticks:{color:tC},title:{display:true,text:'N/mm',color:tC,font:{size:11}}}},
+    options:{...base,scales:{x:{grid:{color:gC},ticks:{color:tC,font:{size:9}}},
+      y:{grid:{color:gC},ticks:{color:tC,font:{size:9}},title:{display:true,text:'N/mm',color:tC,font:{size:9}}}},
       plugins:{legend:{display:false}}}});
 }
 
@@ -558,7 +515,6 @@ function updateCharts(){
   klChart.update();
 }
 
-// ── Data table ────────────────────────────────────────────────────────────────
 function updateDataTable(){
   const body=document.getElementById('dtbody'); if(!body)return;
   const sub=document.getElementById('data-sub');
@@ -584,7 +540,6 @@ function updateDataTable(){
   }).join('');
 }
 
-// ── Master refresh ────────────────────────────────────────────────────────────
 function refresh(){
   updateSVG(); updateMetrics(); buildMiniGrid(); updateCharts(); updateDataTable();
   if(ST.hubId==='custom'){
@@ -596,7 +551,6 @@ function refresh(){
   }
 }
 
-// ── Event handlers ────────────────────────────────────────────────────────────
 function setTab(t){
   ['geo','tension','strength','data'].forEach(n=>{
     const p=document.getElementById('tab-'+n); if(p)p.hidden=(n!==t);
@@ -629,7 +583,6 @@ function adj(key,delta){
   refresh();
 }
 
-// ── Startup ───────────────────────────────────────────────────────────────────
 buildMiniGrid();
 initCharts();
 refresh();
